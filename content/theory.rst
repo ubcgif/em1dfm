@@ -264,11 +264,9 @@ the survey parameters that the observations file is structured the way it is (se
 The individual propagation matrices :math:`\mathbf{M_j}`, and each matrix computed in the construction of the propa-
 gation matrix :math:`\mathbf{P}`, are saved in the forward-modelling routine. These are then re-used in the computation of the sensitivities.
 
-Inversion methodology
----------------------
 
 Computing Sensitivities
-^^^^^^^^^^^^^^^^^^^^^^^
+-----------------------
 
 The inverse problem of determining the conductivity and/or susceptibility of the Earth from electromagnetic
 measurements is nonlinear. Program EM1DFM uses an iterative procedure to solve this problem. At each
@@ -305,9 +303,57 @@ where :math:`P_{11}` and :math:`P_{21}` are elements of the propagation matrix :
     \frac{\partial \mathbf{P}}{\partial m_j} = \mathbf{M_1 M_2 ... M_{j-1}} \Bigg ( \frac{\partial \mathbf{M_j}}{\partial m_j} \mathbf{M_{j+1}} + \mathbf{M_j} \frac{\partial \mathbf{M_{j+1}}}{\partial m_j} \Bigg ) \mathbf{M_{j+2} ... M_M}
     :name:
 
+The sensitivities with respect to the conductivity and susceptibility of the basement halfspace are given by"
+
+.. math::
+    \frac{\partial \mathbf{P}}{\partial m_M} = \mathbf{M_1 M_2 ... M_{M-1}} \frac{\partial \mathbf{M_M}}{\partial m_M} 
+    :name:
+
+The derivatives of the individual layer matrices with respect to the conductivities and susceptibilities are
+straightforward to derive, and are not given here.
+
+Just as for the forward modelling, the Hankel transform in eq. (32), and those in the corresponding
+expressions for the sensitivities of the other observations, are computed using the digital filtering routine of Anderson (1982).
+
+The partial propagation matrices
+
+.. math::
+    \mathbf{P_k} = \mathbf{M_1} \prod_{j=2}^k \mathbf{M_j}, \;\;\; k=2,...,M
+    :name:
+
+are computed during the forward modelling, and saved for re-use during the sensitivity computations. This
+sensitivity-equation approach therefore has the efficiency of an adjoint-equation approach.
 
 
+Inversion Methodologies
+-----------------------
 
+In program EM1DFM, there are four different inversion algorithms. They all have the same general formulation (described in Section 2.5.1), but differ in their treatment of the trade-off parameter (see Sections 2.5.2
+to 2.5.5). In addition, there are four possibilities for the Earth model constructed by the inversion: (a) just conductivity, (b) just susceptibility (with positivity enforced), (c) both conductivity and susceptibility (with
+positivity of the susceptibilities enforced), and (d) both conductivity and susceptibility (without the positivity constraint).
+
+General formulation
+^^^^^^^^^^^^^^^^^^^
+
+The aim of each inversion algorithm is to construct the simplest model that adequately reproduces the
+observations. This is achieved by posing the inverse problem as an optimization problem in which the model
+is sought that minimizes the objective function:
+
+.. math::
+    \Phi = \phi_d + \beta \phi_m - \gamma \phi_{LB}
+    :name:
+
+The three components of this objective function are as follows. :math:`\phi_d` is the data misfit:
+
+.. math::
+    \phi_d = \| \mathbf{W_d} (\mathbf{d - d^{obs}} ) \|^2
+    :name:
+
+where :math:`\| \, \cdot \. \|` represents the :math:`l_2`-norm, :math:`d^{obs}` is the vector containing the
+:math:`N` observations, and :math:`d` is the forward-modelled data. It is assumed that the noise in the observations is Gaussian and uncorrelated, and that the
+estimated standard deviation of the noise in the :math:`i^{th}` observation is of the form :math:`s_0 \hat{s}_i`, where :math:`\hat{s}_i` indicates the
+amount of noise in the :math:`i^{th}` observation relative to that in the others, and is a scale factor that specifies
+the total amount of noise in the set of observations. The matrix :math:`\mathbf{W_d}` is therefore given by:
 
 
 
