@@ -6,18 +6,15 @@ Background theory
 Introduction
 ------------
 
-
-
-
-Setup
------
-
-Detail about source
-^^^^^^^^^^^^^^^^^^^
-
 Program EM1DFM is designed to interpret frequency-domain, small loop, electromagnetic data. These data
 are measurements of the magnetic field due to currents and magnetization induced in the Earth by a sinusoidal
-time-varying current in a small transmitter loop. The receiver loop is assumed to be sufficiently small that
+time-varying current in a small transmitter loop. 
+
+
+Details regarding the source
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The receiver loop is assumed to be sufficiently small that
 the measurements can be considered as point measurements of the magnetic field, and the transmitter loop
 is assumed to be sufficiently small that it can be represented by a magnetic dipole. Program EM1DFM
 can handle any combination of measurements made at different frequencies of the transmitter current, and
@@ -32,8 +29,8 @@ x-, y- and z-components of the free-space field respectively. If the transmitter
 the secondary field is normalized by the magnitude of the free-space field.
 
 
-Details about domain
-^^^^^^^^^^^^^^^^^^^^
+Details regarding the domain
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Program EM1DFM models the Earth beneath a measurement location as a stack of uniform, horizontal
 layers. It is the physical properties of the layers that are obtained during the inversion of all measurements
@@ -235,11 +232,11 @@ for a z-directed magnetic dipole source at (:math:`0,0,-h`), :math:`h>0`, and
 
 .. math::
     \begin{align}
-    H_x(x,y,z,\omega) &= -\frac{1}{4\pi} \Big ( \frac{1}{r} - \frac{2x^2}{r^3} \Big ) \int_0^\infty \Big ( e^{-\lambda |z+h|} - \frac{P_{21}}{P_{11}} e^{\lambda (z-h)} \Big ) \lambda J_1(\lambda r) d\lambda \\
+    H_x(x,y,z,\omega) =& -\frac{1}{4\pi} \Big ( \frac{1}{r} - \frac{2x^2}{r^3} \Big ) \int_0^\infty \Big ( e^{-\lambda |z+h|} - \frac{P_{21}}{P_{11}} e^{\lambda (z-h)} \Big ) \lambda J_1(\lambda r) d\lambda \\
     &-\frac{1}{4\pi} \frac{x^2}{r^2} \int_0^\infty \Big ( e^{-\lambda |z+h|} - \frac{P_{21}}{P_{11}} e^{\lambda (z-h)} \Big ) \lambda^2 J_0(\lambda r) d\lambda \\
-    H_y(x,y,z,\omega) &= \frac{1}{2\pi} \frac{xy}{r^3} \int_0^\infty \Big ( e^{-\lambda |z+h|} - \frac{P_{21}}{P_{11}} e^{\lambda (z-h)} \Big ) \lambda J_1(\lambda r) d\lambda \\
+    H_y(x,y,z,\omega) =& \frac{1}{2\pi} \frac{xy}{r^3} \int_0^\infty \Big ( e^{-\lambda |z+h|} - \frac{P_{21}}{P_{11}} e^{\lambda (z-h)} \Big ) \lambda J_1(\lambda r) d\lambda \\
     &-\frac{1}{4\pi} \frac{xy}{r^2} \int_0^\infty \Big ( e^{-\lambda |z+h|} - \frac{P_{21}}{P_{11}} e^{\lambda (z-h)} \Big ) \lambda^2 J_0(\lambda r) d\lambda \\
-    H_z(x,y,z,\omega) &= \frac{1}{4\pi} \frac{x}{r} \int_0^\infty \Big ( e^{-\lambda |z+h|} + \frac{P_{21}}{P_{11}} e^{\lambda (z-h)} \Big ) \lambda^2 J_1(\lambda r) d\lambda
+    H_z(x,y,z,\omega) =& \frac{1}{4\pi} \frac{x}{r} \int_0^\infty \Big ( e^{-\lambda |z+h|} + \frac{P_{21}}{P_{11}} e^{\lambda (z-h)} \Big ) \lambda^2 J_1(\lambda r) d\lambda
     \end{align}
     :name: Soln_xdip
 
@@ -354,6 +351,317 @@ where :math:`\| \, \cdot \. \|` represents the :math:`l_2`-norm, :math:`d^{obs}`
 estimated standard deviation of the noise in the :math:`i^{th}` observation is of the form :math:`s_0 \hat{s}_i`, where :math:`\hat{s}_i` indicates the
 amount of noise in the :math:`i^{th}` observation relative to that in the others, and is a scale factor that specifies
 the total amount of noise in the set of observations. The matrix :math:`\mathbf{W_d}` is therefore given by:
+
+.. math::
+	\mathbf{W_d} = \textrm{diag} \big \{ 1/(s_0 \hat{s}_1), ..., 1/(s_0 \hat{s}_N) \}
+	:name:
+
+
+The model-structure component of the objective function is :math:`\phi_m`. In its most general form it contains four terms:
+
+.. math::
+	\begin{split}
+	\phi_m =& \alpha_s^\sigma \big \| \mathbf{W_s^\sigma} \big ( \mathbf{m^\sigma - m_s^{\sigma , ref}} \big ) \big \|^2\\
+	&+ \alpha_z^\sigma \big \| \mathbf{W_z^\sigma} \big ( \mathbf{m^\sigma - m_z^{\sigma , ref}} \big ) \big \|^2\\
+	&+ \alpha_s^\kappa \big \| \mathbf{W_s^\kappa} \big ( \mathbf{m^\kappa - m_s^{\kappa , ref}} \big ) \big \|^2\\
+	&+ \alpha_z^\kappa \big \| \mathbf{W_z^\kappa} \big ( \mathbf{m^\kappa - m_z^{\kappa , ref}} \big ) \big \|^2
+	\end{split}
+	:name: MOF
+
+where :math:`\mathbf{m^\sigma}` is the vector containing the logarithms of the layer conductivities, and :math:`\mathbf{m^\kappa}` is the vector containing
+the layer susceptibilities. The matrices :math:`\mathbf{W_s^\sigma}` and :math:`\mathbf{W_s^\kappa}` are:
+
+.. math::
+	\mathbf{W_s^\sigma} = \mathbf{W_s^\kappa} = \textrm{diag} \big \{ \sqrt{t_1}, ..., \sqrt{t_{m-1}}, \sqrt{t_{M-1}} \big \}
+	:name:
+
+where :math:`t_j` is the thickness of the :math:`j^{th}` layer. And the matricies :math:`\mathbf{W_z^\sigma}` and :math:`\mathbf{W_z^\kappa}` are:
+
+.. math::
+	\mathbf{W_z^\sigma} = \mathbf{W_z^\kappa} =
+	\begin{bmatrix} -\sqrt{\frac{2}{t_1 + t_2}} & \sqrt{\frac{2}{t_1 + t_2}} & & & & \\
+	& -\sqrt{\frac{2}{t_2 + t_3}} & \sqrt{\frac{2}{t_2 + t_3}} & & & \\
+	& & \ddots & & & \\
+	& & & -\sqrt{\frac{2}{t_{M-2} + t_{M-1}}} & \sqrt{\frac{2}{t_{M-2} + t_{M-1}}} & \\
+	& & & & -\sqrt{\frac{2}{t_{M-1}}} & \sqrt{\frac{2}{t_{M-1}}} \\
+	& & & & & 0 \end{bmatrix}
+	:name:
+
+The rows of any of these four weighting matricescan be scaled if desired (see Section **link**). The
+vectors :math:`\mathbf{m_s^{\sigma , ref}}`, :math:`\mathbf{m_z^{\sigma , ref}}`, :math:`\mathbf{m_s^{\kappa , ref}}` and :math:`\mathbf{m_z^{\kappa , ref}}`
+contain the layer conductivities/susceptibilities for the four possible reference models. The four terms in
+:math:`\phi_m` therefore correspond to the “smallest” and “flattest” terms for the
+conductivity and susceptibility parts of the model. The relative importance of the four terms is governed by
+the coefficients :math:`\mathbf{\alpha_s^{\sigma}}`, :math:`\mathbf{\alpha_z^{\sigma}}`, :math:`\mathbf{\alpha_s^{\kappa}}` and :math:`\mathbf{\alpha_z^{\kappa}}`
+, which are discussed in Section **link**. :math:`\beta` is the trade-off parameter that
+balances the opposing effects of minimizing the misfit and minimizing the amount of structure in the model.
+It is the different ways in which :math:`\beta` is determined that distinguish the four inversion algorithms in program
+EM1DFM from one another. They are described in the next sections.
+
+Finally, the third component of the objective function is a logarithmic barrier term:
+
+.. math::
+	\phi_{LB} = \sum_{j-1}^M \textrm{log} \, c\kappa_j
+	:name:
+
+where :math:`c` is a constant, usually equal to 1. This term is how the positivity constraint on the layer susceptibilities
+is enforced. It, and its coefficient :math:`\gamma`, are described in Section 2.5.7 (**link**.
+
+As mentioned in Section 2.4 (**link**), the inverse problem considered here is nonlinear. It is solved using an
+iterative procedure. At the :math:`n^{th}` iteration, the actual objective function being minimized is:
+
+.. math::
+	\Phi^n = \phi_d^n + \beta^n \phi_m^n - \gamma^n \phi^n_{LB}
+	:name: Objective_Fcn
+
+In the misfit :math:`\phi_d^n`, the forward-modelled data :math:`d_n` are those for the model that is sought at this iteration. They
+are approximated by:
+
+.. math::
+	\mathbf{d^n} = \mathbf{d}^{n-1} + \mathbf{J}^{\sigma, n-1} \delta \mathbf{m}^\sigma + \mathbf{J}^{\kappa, n-1} \delta \mathbf{m}^\kappa
+	:name: DataPerturb
+
+where :math:`\delta \mathbf{m}^\sigma = \mathbf{m}^{\sigma , n} - \mathbf{m}^{\sigma , n-1}` \& :math:`\delta \mathbf{m}^\kappa = \mathbf{m}^{\kappa , n} - \mathbf{m}^{\kappa , n-1}`, and
+:math:`\mathbf{J}^{\sigma , n-1}` \& :math:`\mathbf{J}^{\kappa , n-1}` are the two halves of the Jacobian matrix given by :eq:`Sensitivity` and evaluated for the model from the previous iteration. At
+the :math:`n^{th}` iteration, the problem to be solved is that of finding the change, (:math:`\delta \mathbf{m}^\sigma , \delta \mathbf{m}^\kappa`) to the model which
+minimizes the objective function :math:`\Phi^n`. Differentiating eq. :eq:`Objective_Fcn` with respect to the components of :math:`\delta \mathbf{m}^\sigma` \& :math:`\delta \mathbf{m}^\kappa`, and
+equating the resulting expressions to zero, gives the system of equations to be solved. The derivatives of :math:`\phi^n_d` (incorporating the approximation of eq. :eq:`DataPerturb`) and
+are straightforward to calculate. However, a further approximation must be made to linearize the derivatives of the logarithmic barrier term:
+
+.. math::
+	\begin{split}
+	\frac{\partial \phi^n{LB}}{\partial \delta m_k^\kappa} &= \frac{\partial}{\partial \delta \kappa_k} \sum_{j=1}^M \textrm{log} \big ( \kappa_j^{n-1} + \delta \kappa_j \big ) \\
+	&= \frac{1}{\kappa_k^{n-1} + \delta \kappa_j} \\
+	& \approx \frac{1}{\kappa_k^{n-1}} \Big ( 1 - \frac{\delta \kappa_k}{\kappa_k^{n-1}} \Big )
+	\end{split}
+	:name:
+
+The linear system of equations to be solved for (:math:`\delta \mathbf{m}^\sigma , \delta \mathbf{m}^\kappa`) is therefore:
+
+.. math::
+	\begin{split}
+	& \bigg [ \mathbf{J}^{n-1 \, T} \mathbf{W_d}^T \mathbf{W_d} \mathbf{J}^{n-1} + \beta^n \sum_{i=1}^2 \mathbf{W_i}^T \mathbf{W_i} + \frac{\gamma^n}{2} \mathbf{\hat{X}}^{n-1 \, T} \mathbf{\hat{X}}^{n-1} \bigg ] \delta \mathbf{m} = \\
+	& \mathbf{J}^{n-1 \, T} \mathbf{W_d}^{n-1} \mathbf{W_d} \big ( \mathbf{d^{obs}} - \mathbf{d}^{n-1} \big )
+	+ \beta^n \sum_{i=1}^2 \mathbf{W_i}^T \mathbf{W_i} \big ( \mathbf{m_i^{ref} - \mathbf{m}^{n-1}} \big )
+	+ \frac{\gamma^n}{2} \mathbf{\hat{X}}^{n-1 \, T} \mathbf{\hat{X}}^{n-1} \mathbf{m}^{n-1}
+	\end{split}
+	:name: Systemdm
+
+where:
+
+.. math::
+	\begin{split}
+	\mathbf{J}^{n-1} &= \big ( \mathbf{J}^{\sigma , n-1} \mathbf{J}^{\kappa , n-1} \big ) \\
+	\mathbf{W_1} &= \begin{bmatrix} \sqrt{\alpha_s^\sigma} \mathbf{W}_s^\sigma & 0 \\ 0 & \sqrt{\alpha_s^\kappa} \mathbf{W}_s^\kappa \end{bmatrix} \\ 
+	\mathbf{W_2} &= \begin{bmatrix} \sqrt{\alpha_z^\sigma} \mathbf{W}_z^\sigma & 0 \\ 0 & \sqrt{\alpha_z^\kappa} \mathbf{W}_z^\kappa \end{bmatrix} \\
+	\mathbf{m_1^{ref}} &= \big ( \mathbf{m}_s^{\sigma , ref \, T} \mathbf{m}_s^{\kappa , ref \, T} \big )^T \\
+	\mathbf{m_2^{ref}} &= \big ( \mathbf{m}_z^{\sigma , ref \, T} \mathbf{m}_z^{\kappa , ref \, T} \big )^T \\
+	\mathbf{\hat{X}}^{n-1} &= \big ( 0 \, (\mathbf{X}^{n-1})^{-1} \big )
+	\end{split}
+	:name:
+
+where :math:`\mathbf{\hat{X}}^{n-1} = \textrm{diag} \{ m_1^{\kappa, n-1}, ... , m_M^{\kappa, n-1} \}`. The solution to eq. :eq:`Systemdm` is equivalent to the least-squares solution of:
+
+.. math::
+	\begin{bmatrix} \mathbf{W_d J}^{n-1} \\ \sqrt{\beta^n} \mathbf{W_1} \\ \sqrt{\beta^n} \mathbf{W_2} \\ \sqrt{\gamma^n/2} \, \mathbf{\hat{X}}^{n-1} \end{bmatrix} \delta \mathbf{m} =
+	\begin{bmatrix} \mathbf{W_d } ( \mathbf{d^{obs} - d}^{n-1} ) \\ \sqrt{\beta^n} \mathbf{W_1} ( \mathbf{m_1^{ref} - m}^{n-1} ) \\ \sqrt{\beta^n} \mathbf{W_2}( \mathbf{m^{ref} - m}^{n-1} ) \\ \sqrt{\gamma^n/2} \, \mathbf{\hat{X}}^{n-1} \mathbf{m}^{n-1} \end{bmatrix}
+	:name: SystemdmLSQ
+
+Once the step :math:`\delta \mathbf{m}` has been determined by the solution of eq. :eq:`Systemdm` or eq. :eq:`SystemdmLSQ`, the new model is given by:
+
+.. math::
+	\mathbf{m}^n = \mathbf{m}^{n-1} + \nu \delta \mathbf{m}
+	:name:
+
+There are two conditions on the step length :math:`\nu`. First, if positivity of the layer susceptibilities is being enforced:
+
+.. math::
+	\nu \delta \kappa_j > -\kappa_j^{n-1}
+	:name: cond1
+
+must hold for all :math:`j=1,...,M`. Secondly, the objective function must be decreased by the addition of the
+step to the model:
+
+.. math::
+	\phi_d^n + \beta^n \phi_m^n - \gamma^n \phi_{LB}^n < \phi_d^{n-1} + \beta^n \phi_m^{n-1} - \gamma^n \phi_{LB}^{n-1}
+	:name: cond2
+
+where :math:`\phi_d^n` is now the misfit computed using the full forward modelling for the new model :math:`\mathbf{m}^n`. To determine
+:math:`\mathbf{m}^n`, a step length, :math:`\nu`, of either 1, or the maximum value for which eq. :eq:`cond1` is true, whichever is greater, is
+tried. If eq. (57) is true for this step length, it is accepted. If eq. :eq:`cond2` is not true, :math:`\nu` is decreased by factors of 2 until it is true.
+
+Algorithm 1: fixed trade-off parameter
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The trade-off parameter, :math:`\beta`, remains fixed at its user-supplied value throughout the inversion. The least-
+squares solution of eq. :eq:`SystemdmLSQ` is used. This is computed using the subroutine “LSQR” of Paige & Saunders
+(1982). If the desired value of :math:`\beta` is known, this is the fastest of the four inversion algorithms as it does not
+involve a line search over trial values of :math:`\beta` at each iteration. If the appropriate value of :math:`\beta` is not known, it
+can be found using this algorithm by trail-and-error. This may or may not be time-consuming.
+
+Algorithm 2: discrepancy principle
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If a complete description of the noise in a set of observations is available, that is, both :math:`s_0` and :math:`\hat{s}_i \: (i=1,...,N)` are known, the expectation of the misfit,
+:math:`E (\phi_d)`, is equal to the number of observations :math:`N`. Algorithm 2 therefore attempts to choose the trade-off parameter so that the misfit for the final model is equal to a target
+value of :math:`chifac \times N`. If the noise in the observations is well known, :math:`chifac` should equal 1. However, :math:`chifac` can be adjusted by the user to give a target misfit appropriate for a particular data-set. If a misfit as small as the target value cannot be achieved, the algorithm searches for the smallest possible misfit.
+
+Experience has shown that choosing the trade-off parameter at early iterations in this way can lead to
+excessive structure in the model, and that removing this structure once the target (or minimum) misfit has
+been attained can require a significant number of additional iterations. A restriction is therefore placed on
+the greatest-allowed decrease in the misfit at any iteration, thus allowing structure to be slowly but steadily
+introduced into the model. In program EM1DFM, the target misfit at the :math:`n^{th}` iteration is given by:
+
+.. math::
+	\phi_d^{n, tar} = \textrm{max} \big ( mfac \times \phi_d^{n-1}, chifac \times N \big )
+	:name:
+
+where the user-supplied factor :math:`mfac` is such that :math:`0.1 \leq mfac \leq 0.5`.
+
+The step :math:`\delta \mathbf{m}` is found from the solution of eq. :eq:`SystemdmLSQ` using subroutine
+LSQR of Paige & Saunders (1982). The line search at each iteration moves along the :math:`\phi_d` versus log :math:`\! \beta` curve until either the target misfit, :math:`\phi_d^{n, tar}`,
+is bracketed, in which case a bisection search is used to converge to the target, or the minimum misfit
+(:math:`> \phi_d^{n-1}`) is bracketed, in which case a golden section search (for example, Press et al., 1986) is used to
+converge to the minimum. The starting value of :math:`\beta` for each line search is :math:`\beta^{n-1}`. For the first iteration, the :math:`\beta \, (=\beta_0)` for the line search is given by
+:math:`N/\phi_m (\mathbf{m}^\dagger)`, where :math:`\mathbf{m}^\dagger` contains typical values of conductivity and/or susceptibility. (Specifically, :math:`\mathbf{m}^\dagger` is a model whose top
+:math:`M/5` layers have a conductivity of 0.02 S/m and susceptibility of 0.02 SI units, and whose remaining layers have a conductivity of 0.01 S/m and
+susceptibility of 0 SI units. Also, the reference models used in the computation of :math:`\phi_m (\mathbf{m}^\dagger )` are homogeneous
+halfspaces of 0.01 S/m and 0 SI units.) The line search is efficient, but does involve the full forward modelling to compute the misfit for each trial value of :math:`\beta`.
+
+
+Algorithm 3: GCV criterion
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If only the relative amount of noise in the observations is known, that is, :math:`\hat{s}_i (i=1,...,N)` is known but not :math:`s_0`,
+the appropriate target value for the misfit cannot be determined, and hence Algorithm 2 is not the most
+suitable. The generalized cross-validation (GCV) method provides a means of estimating, during the course
+of an inversion, a value of the trade-off parameter that results in an appropriate fit to the observations, and
+in so doing, effectively estimating the level of noise, :math:`s_0`, in the observations (see, for example, Wahba, 1990;
+Hansen, 1998).
+
+The GCV method is based on the following argument (Wahba, 1990; Haber, 1997; Haber & Oldenburg,
+2000). Consider inverting all but the first observation using a trial value of :math:`\beta`, and then computing the
+individual misfit between the first observation and the first forward-modelled datum for the model produced
+by the inversion. This can be repeated leaving out all the other observations in turn, inverting the retained
+observations using the same value of :math:`\beta`, and computing the misfit between the observation left out and the
+corresponding forward-modelled datum. The best value of :math:`\beta` can then be defined as the one which gives the
+smallest sum of all the individual misfits. For a linear problem, this corresponds to minimizing the GCV
+function. For a nonlinear problem, the GCV method can be applied to the linearized problem being solved
+at each iteration (Haber, 1997; Haber & Oldenburg, 2000; Li & Oldenburg, 2000; Farquharson & Oldenburg,
+2000). From eq. :eq:`Systemdm`, the GCV function for the :math:`n^{th}` iteration is given by:
+
+.. math::
+	GCV (\beta ) = \dfrac{\big \| \mathbf{W_d \hat{d} - W_d J}^{n-1} \mathbf{M}^{-1} \big ( \mathbf{J}^{n-1 \, T} \mathbf{W_d}T \mathbf{W_d \hat{d} + r} \big ) \big \|^2 }{\big [ \textrm{trace} \big ( \mathbf{I - W_d J}^{n-1} \mathbf{M}^{-1} \mathbf{J}^{n-1 \, T} \mathbf{W_d}^T \big )  \big ]^2}
+	:name: CGV
+
+where
+
+.. math::
+	\begin{split}
+	\mathbf{M} (\beta) &= \bigg [ \mathbf{J}^{n-1 \, T} \mathbf{W_d}^T \mathbf{W_d} \mathbf{J}^{n-1} + \beta^n \sum_{i=1}^2 \mathbf{W_i}^T \mathbf{W_i} + \frac{\gamma^n}{2} \mathbf{\hat{X}}^{n-1 \, T} \mathbf{\hat{X}}^{n-1} \bigg ] \\
+	\mathbf{r} &= \beta^n \sum_{i=1}^2 \mathbf{W_i}^T \mathbf{W_i} \big ( \mathbf{m_i^{ref} - \mathbf{m}^{n-1}} \big ) + \frac{\gamma^n}{2} \mathbf{\hat{X}}^{n-1 \, T} \mathbf{\hat{X}}^{n-1} \mathbf{m}^{n-1}
+	\end{split}
+	:name:
+
+and :math:`\mathbf{\hat{d} - d^{obs} - d}^{n-1}`. If :math:`\beta^*` is the value of the trade-off parameter that minimizes eq. :eq:`CGV` at the :math:`n^{th}` iteration, the actual value of
+:math:`\beta` used to compute the new model is given by:
+
+.. math::
+	\beta_n = \textrm{max} (\beta^*, bfac \times \beta^{n-1} )
+	:name: betachoice
+
+where the user-supplied factor :math:`bfac` is such that :math:`0.01<bfac<0.5`. As for Algorithm 2, this limit on the
+allowed decrease in the trade-off parameter prevents unnecessary structure being introduced into the model
+at early iterations. The inverse of the matrix :math:`\mathbf{M}` required in eq. :eq:`CGV`, and the solution to eq. :eq:`Systemdm` given this inverse, is
+computed using the Cholesky factorization routines from LAPACK (Anderson et al., 1999). The line search at each iteration moves along the curve of the GCV function versus the logarithm of the trade-off parameter
+until the minimum is bracketed (or :math:`bfac \times \beta^{n-1}` reached), and then a golden section search (e.g., Press et al.,
+1986) is used to converge to the minimum. The starting value of :math:`\beta` in the line search is :math:`\beta^{n-1}` ( :math:`\beta^0` is estimated
+in the same way as for Algorithm 2). This is an efficient search, even with the inversion of the matrix :math:`\mathbf{M}`.
+
+
+Algorithm 4: L-curve criterion
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+As for the GCV-based method described in Section 2.5.4 (**link**), the L-curve method provides a means of estimating
+an appropriate value of the trade-off parameter if only :math:`\hat{s}_i, \, i=1,...,N`, are known and not :math:`s_0`. For a linear
+inverse problem, if the misfit, :math:`\phi_d`, is plotted against the model norm, :math:`\phi_m`, for all reasonable values of the
+trade-off parameter, :math:`\beta`, the resulting curve tends to have a characteristic "L"-shape, especially when plotted
+on logarithmic axes (see, for example, Hansen, 1998). The corner of this L-curve corresponds to roughly
+equal emphasis on the misfit and model norm during the inversion. Moving along the L-curve away from the
+corner is associated with a progressively smaller decrease in the misfit for large increases in the model norm,
+or a progressively smaller decrease in the model norm for large increases in the misfit. The value of :math:`\beta` at the
+point of maximum curvature on the L-curve is therefore the most appropriate, according to this criterion.
+
+For a nonlinear problem, the L-curve criterion can be applied to the linearized inverse problem at each
+iteration (Li & Oldenburg, 1999; Farquharson & Oldenburg, 2000). In this situation, the L-curve is defined
+using the linearized misfit, which uses the approximation given in eq. (45) for the forward-modelled data.
+The curvature of the L-curve is computed using the formula (Hansen, 1998):
+
+.. math::
+	C(\beta) = \frac{\zeta^\prime \eta^{\prime \prime } - \zeta^{\prime\prime} \eta^\prime}{\big ( (\zeta^\prime)^2 + (\eta^\prime)^2 \big )^{3/2}}
+	:name: zetaeq
+
+where :math:`\zeta = \textrm{log} \, \phi_d^{lin}` and :math:`\eta = \textrm{log}\, \phi_m`. The prime denotes differentiation with respect to log :math:`\beta`. As for both
+Algorithms 2 & 3, a restriction is imposed on how quickly the trade-off parameter can be decreased from one iteration to the next. The actual value of :math:`\beta` chosen for use at the
+:math:`n^{th}` th iteration is given by eq. :eq:`betachoice`, where :math:`\beta^*` now corresponds to the value of :math:`\beta` at the point of maximum curvature on the L-curve.
+
+Experience has shown that the L-curve for the inverse problem considered here does not always have
+a sharp, distinct corner. The associated slow variation of the curvature with :math:`\beta` can make the numerical
+differentiation required to evaluate eq. :eq:`zetaeq` prone to numerical noise. The line search along the L-curve used
+in program EM1DFM to find the point of maximum curvature is therefore designed to be robust (rather
+than efficient). The L-curve is sampled at equally-spaced values of log :math:`\beta`, and long differences are used in the
+evaluation of eq. :eq:`zetaeq` to introduce some smoothing. A parabola is fit through the point from the equally-
+spaced sampling with the maximum value of curvature and its two nearest neighbours. The value of :math:`\beta` at the
+maximum of this parabola is taken as :math:`\beta^*`. In addition, it is sometimes found that, for the range of values of
+:math:`\beta` that are tried, the maximum value of the curvature of the L-curve on logarithmic axes is negative. In this
+case, the curvature of the L-curve on linear axes is investigated to find a maximum. As for Algorithms 1 &
+2, the least-squares solution to eq. :eq:`SystemdmLSQ` is used, and is computed using subroutine LSQR of Paige & Saunders (1982).
+
+Relative weighting within the model norm
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The four coefficients in the model norm (see eq. :eq:`MOF`) are ultimately the responsibility of the user. Larger
+values of :math:`\alpha_s^\sigma` relative to :math:`\alpha_z^\sigma` result in constructed conductivity models that are closer to the supplied reference
+model. Smaller values of :math:`\alpha_s^\sigma` and :math:`\alpha_z^\sigma` result in flatter conductivity models. Likewise for the coefficients
+related to susceptibilities.
+
+If both conductivity and susceptibility are active in the inversion, the relative size of
+:math:`\alpha_s^\sigma` & :math:`\alpha_z^\sigma` to :math:`\alpha_s^\kappa` & :math:`\alpha_z^\kappa`
+is also required. Program EM1DFM includes a simple means of calculating a default value for this
+relative balance. Using the layer thicknesses, weighting matrices :math:`\mathbf{W_s^\sigma}`, :math:`\mathbf{W_z^\sigma}`, :math:`\mathbf{W_s^\kappa}` & :math:`\mathbf{W_z^\kappa}`, and user-supplied
+weighting of the smallest and flattest parts of the conductivity and susceptibility components of the model norm (see acs, acz, ass & asz in the input file description, line 5, Section 3.1.1 **link**), the following two quantities
+are computed for a test model :math:`\mathbf{m}^*`:
+
+.. math::
+	\begin{split}
+	\phi_m^\sigma &= acs \big \| \mathbf{W_s^\sigma} \big ( \mathbf{m}^* - \mathbf{m}_s^{\sigma, ref} \big ) \big \|^2 + acz \big \| \mathbf{W_z^\sigma} \big ( \mathbf{m}^* - \mathbf{m}_z^{\sigma, ref} \big ) \big \|^2 \\
+	\phi_m^\kappa &= ass \big \| \mathbf{W_s^\kappa} \big ( \mathbf{m}^* - \mathbf{m}_s^{\kappa, ref} \big ) \big \|^2 + asz \big \| \mathbf{W_z^\kappa} \big ( \mathbf{m}^* - \mathbf{m}_z^{\kappa, ref} \big ) \big \|^2
+	\end{split}
+	:name:
+
+The conductivity and susceptibility of the top :math:`N/5` layers in the test model are 0.02 S/m and 0.02 SI units
+respectively, and the conductivity and susceptibility of the remaining layers are 0.01 S/m and 0 SI units.
+The coefficients of the model norm used in the inversion are then :math:`\alpha_s^\sigma = acs`, :math:`\alpha_z^\sigma = acz`, :math:`\alpha_s^\kappa = A^s \times ass` & :math:`\alpha_z^\kappa = A^d \times asz` where
+:math:`A^s \phi_m^\sigma / \phi_m^\kappa`. It has been found that a balance between the conductivity and
+susceptibility portions of the model norm computed in this way is adequate as an initial guess. However, the
+balance usually requires modification by the user to obtain the best susceptibility model. (The conductivity
+model tends to be insensitive to this balance.) If anything, the default balance will suppress the constructed
+susceptibility model.
+
+
+Positive susceptibility
+^^^^^^^^^^^^^^^^^^^^^^^
+
+
+
+
+
+
+
+
+
+
+
 
 
 
