@@ -338,7 +338,7 @@ is sought that minimizes the objective function:
 
 .. math::
     \Phi = \phi_d + \beta \phi_m - \gamma \phi_{LB}
-    :name:
+    :name: ObjectiveFun
 
 The three components of this objective function are as follows. :math:`\phi_d` is the data misfit:
 
@@ -353,39 +353,39 @@ amount of noise in the :math:`i^{th}` observation relative to that in the others
 the total amount of noise in the set of observations. The matrix :math:`\mathbf{W_d}` is therefore given by:
 
 .. math::
-	\mathbf{W_d} = \textrm{diag} \big \{ 1/(s_0 \hat{s}_1), ..., 1/(s_0 \hat{s}_N) \}
-	:name:
+    \mathbf{W_d} = \textrm{diag} \big \{ 1/(s_0 \hat{s}_1), ..., 1/(s_0 \hat{s}_N) \}
+    :name:
 
 
 The model-structure component of the objective function is :math:`\phi_m`. In its most general form it contains four terms:
 
 .. math::
-	\begin{split}
-	\phi_m =& \alpha_s^\sigma \big \| \mathbf{W_s^\sigma} \big ( \mathbf{m^\sigma - m_s^{\sigma , ref}} \big ) \big \|^2\\
-	&+ \alpha_z^\sigma \big \| \mathbf{W_z^\sigma} \big ( \mathbf{m^\sigma - m_z^{\sigma , ref}} \big ) \big \|^2\\
-	&+ \alpha_s^\kappa \big \| \mathbf{W_s^\kappa} \big ( \mathbf{m^\kappa - m_s^{\kappa , ref}} \big ) \big \|^2\\
-	&+ \alpha_z^\kappa \big \| \mathbf{W_z^\kappa} \big ( \mathbf{m^\kappa - m_z^{\kappa , ref}} \big ) \big \|^2
-	\end{split}
-	:name: MOF
+    \begin{split}
+    \phi_m =& \alpha_s^\sigma \big \| \mathbf{W_s^\sigma} \big ( \mathbf{m^\sigma - m_s^{\sigma , ref}} \big ) \big \|^2\\
+    &+ \alpha_z^\sigma \big \| \mathbf{W_z^\sigma} \big ( \mathbf{m^\sigma - m_z^{\sigma , ref}} \big ) \big \|^2\\
+    &+ \alpha_s^\kappa \big \| \mathbf{W_s^\kappa} \big ( \mathbf{m^\kappa - m_s^{\kappa , ref}} \big ) \big \|^2\\
+    &+ \alpha_z^\kappa \big \| \mathbf{W_z^\kappa} \big ( \mathbf{m^\kappa - m_z^{\kappa , ref}} \big ) \big \|^2
+    \end{split}
+    :name: MOF
 
 where :math:`\mathbf{m^\sigma}` is the vector containing the logarithms of the layer conductivities, and :math:`\mathbf{m^\kappa}` is the vector containing
 the layer susceptibilities. The matrices :math:`\mathbf{W_s^\sigma}` and :math:`\mathbf{W_s^\kappa}` are:
 
 .. math::
-	\mathbf{W_s^\sigma} = \mathbf{W_s^\kappa} = \textrm{diag} \big \{ \sqrt{t_1}, ..., \sqrt{t_{m-1}}, \sqrt{t_{M-1}} \big \}
-	:name:
+    \mathbf{W_s^\sigma} = \mathbf{W_s^\kappa} = \textrm{diag} \big \{ \sqrt{t_1}, ..., \sqrt{t_{m-1}}, \sqrt{t_{M-1}} \big \}
+    :name:
 
 where :math:`t_j` is the thickness of the :math:`j^{th}` layer. And the matricies :math:`\mathbf{W_z^\sigma}` and :math:`\mathbf{W_z^\kappa}` are:
 
 .. math::
-	\mathbf{W_z^\sigma} = \mathbf{W_z^\kappa} =
-	\begin{bmatrix} -\sqrt{\frac{2}{t_1 + t_2}} & \sqrt{\frac{2}{t_1 + t_2}} & & & & \\
-	& -\sqrt{\frac{2}{t_2 + t_3}} & \sqrt{\frac{2}{t_2 + t_3}} & & & \\
-	& & \ddots & & & \\
-	& & & -\sqrt{\frac{2}{t_{M-2} + t_{M-1}}} & \sqrt{\frac{2}{t_{M-2} + t_{M-1}}} & \\
-	& & & & -\sqrt{\frac{2}{t_{M-1}}} & \sqrt{\frac{2}{t_{M-1}}} \\
-	& & & & & 0 \end{bmatrix}
-	:name:
+    \mathbf{W_z^\sigma} = \mathbf{W_z^\kappa} =
+    \begin{bmatrix} -\sqrt{\frac{2}{t_1 + t_2}} & \sqrt{\frac{2}{t_1 + t_2}} & & & & \\
+    & -\sqrt{\frac{2}{t_2 + t_3}} & \sqrt{\frac{2}{t_2 + t_3}} & & & \\
+    & & \ddots & & & \\
+    & & & -\sqrt{\frac{2}{t_{M-2} + t_{M-1}}} & \sqrt{\frac{2}{t_{M-2} + t_{M-1}}} & \\
+    & & & & -\sqrt{\frac{2}{t_{M-1}}} & \sqrt{\frac{2}{t_{M-1}}} \\
+    & & & & & 0 \end{bmatrix}
+    :name:
 
 The rows of any of these four weighting matricescan be scaled if desired (see Section **link**). The
 vectors :math:`\mathbf{m_s^{\sigma , ref}}`, :math:`\mathbf{m_z^{\sigma , ref}}`, :math:`\mathbf{m_s^{\kappa , ref}}` and :math:`\mathbf{m_z^{\kappa , ref}}`
@@ -401,8 +401,8 @@ EM1DFM from one another. They are described in the next sections.
 Finally, the third component of the objective function is a logarithmic barrier term:
 
 .. math::
-	\phi_{LB} = \sum_{j-1}^M \textrm{log} \, c\kappa_j
-	:name:
+    \phi_{LB} = \sum_{j-1}^M \textrm{log} \, c\kappa_j
+    :name: barrier_cond
 
 where :math:`c` is a constant, usually equal to 1. This term is how the positivity constraint on the layer susceptibilities
 is enforced. It, and its coefficient :math:`\gamma`, are described in Section 2.5.7 (**link**.
@@ -411,15 +411,15 @@ As mentioned in Section 2.4 (**link**), the inverse problem considered here is n
 iterative procedure. At the :math:`n^{th}` iteration, the actual objective function being minimized is:
 
 .. math::
-	\Phi^n = \phi_d^n + \beta^n \phi_m^n - \gamma^n \phi^n_{LB}
-	:name: Objective_Fcn
+    \Phi^n = \phi_d^n + \beta^n \phi_m^n - \gamma^n \phi^n_{LB}
+    :name: Objective_Fcn
 
 In the misfit :math:`\phi_d^n`, the forward-modelled data :math:`d_n` are those for the model that is sought at this iteration. They
 are approximated by:
 
 .. math::
-	\mathbf{d^n} = \mathbf{d}^{n-1} + \mathbf{J}^{\sigma, n-1} \delta \mathbf{m}^\sigma + \mathbf{J}^{\kappa, n-1} \delta \mathbf{m}^\kappa
-	:name: DataPerturb
+    \mathbf{d^n} = \mathbf{d}^{n-1} + \mathbf{J}^{\sigma, n-1} \delta \mathbf{m}^\sigma + \mathbf{J}^{\kappa, n-1} \delta \mathbf{m}^\kappa
+    :name: DataPerturb
 
 where :math:`\delta \mathbf{m}^\sigma = \mathbf{m}^{\sigma , n} - \mathbf{m}^{\sigma , n-1}` \& :math:`\delta \mathbf{m}^\kappa = \mathbf{m}^{\kappa , n} - \mathbf{m}^{\kappa , n-1}`, and
 :math:`\mathbf{J}^{\sigma , n-1}` \& :math:`\mathbf{J}^{\kappa , n-1}` are the two halves of the Jacobian matrix given by :eq:`Sensitivity` and evaluated for the model from the previous iteration. At
@@ -429,62 +429,62 @@ equating the resulting expressions to zero, gives the system of equations to be 
 are straightforward to calculate. However, a further approximation must be made to linearize the derivatives of the logarithmic barrier term:
 
 .. math::
-	\begin{split}
-	\frac{\partial \phi^n{LB}}{\partial \delta m_k^\kappa} &= \frac{\partial}{\partial \delta \kappa_k} \sum_{j=1}^M \textrm{log} \big ( \kappa_j^{n-1} + \delta \kappa_j \big ) \\
-	&= \frac{1}{\kappa_k^{n-1} + \delta \kappa_j} \\
-	& \approx \frac{1}{\kappa_k^{n-1}} \Big ( 1 - \frac{\delta \kappa_k}{\kappa_k^{n-1}} \Big )
-	\end{split}
-	:name:
+    \begin{split}
+    \frac{\partial \phi^n{LB}}{\partial \delta m_k^\kappa} &= \frac{\partial}{\partial \delta \kappa_k} \sum_{j=1}^M \textrm{log} \big ( \kappa_j^{n-1} + \delta \kappa_j \big ) \\
+    &= \frac{1}{\kappa_k^{n-1} + \delta \kappa_j} \\
+    & \approx \frac{1}{\kappa_k^{n-1}} \Big ( 1 - \frac{\delta \kappa_k}{\kappa_k^{n-1}} \Big )
+    \end{split}
+    :name:
 
 The linear system of equations to be solved for (:math:`\delta \mathbf{m}^\sigma , \delta \mathbf{m}^\kappa`) is therefore:
 
 .. math::
-	\begin{split}
-	& \bigg [ \mathbf{J}^{n-1 \, T} \mathbf{W_d}^T \mathbf{W_d} \mathbf{J}^{n-1} + \beta^n \sum_{i=1}^2 \mathbf{W_i}^T \mathbf{W_i} + \frac{\gamma^n}{2} \mathbf{\hat{X}}^{n-1 \, T} \mathbf{\hat{X}}^{n-1} \bigg ] \delta \mathbf{m} = \\
-	& \mathbf{J}^{n-1 \, T} \mathbf{W_d}^{n-1} \mathbf{W_d} \big ( \mathbf{d^{obs}} - \mathbf{d}^{n-1} \big )
-	+ \beta^n \sum_{i=1}^2 \mathbf{W_i}^T \mathbf{W_i} \big ( \mathbf{m_i^{ref} - \mathbf{m}^{n-1}} \big )
-	+ \frac{\gamma^n}{2} \mathbf{\hat{X}}^{n-1 \, T} \mathbf{\hat{X}}^{n-1} \mathbf{m}^{n-1}
-	\end{split}
-	:name: Systemdm
+    \begin{split}
+    & \bigg [ \mathbf{J}^{n-1 \, T} \mathbf{W_d}^T \mathbf{W_d} \mathbf{J}^{n-1} + \beta^n \sum_{i=1}^2 \mathbf{W_i}^T \mathbf{W_i} + \frac{\gamma^n}{2} \mathbf{\hat{X}}^{n-1 \, T} \mathbf{\hat{X}}^{n-1} \bigg ] \delta \mathbf{m} = \\
+    & \mathbf{J}^{n-1 \, T} \mathbf{W_d}^{n-1} \mathbf{W_d} \big ( \mathbf{d^{obs}} - \mathbf{d}^{n-1} \big )
+    + \beta^n \sum_{i=1}^2 \mathbf{W_i}^T \mathbf{W_i} \big ( \mathbf{m_i^{ref} - \mathbf{m}^{n-1}} \big )
+    + \frac{\gamma^n}{2} \mathbf{\hat{X}}^{n-1 \, T} \mathbf{\hat{X}}^{n-1} \mathbf{m}^{n-1}
+    \end{split}
+    :name: Systemdm
 
 where:
 
 .. math::
-	\begin{split}
-	\mathbf{J}^{n-1} &= \big ( \mathbf{J}^{\sigma , n-1} \mathbf{J}^{\kappa , n-1} \big ) \\
-	\mathbf{W_1} &= \begin{bmatrix} \sqrt{\alpha_s^\sigma} \mathbf{W}_s^\sigma & 0 \\ 0 & \sqrt{\alpha_s^\kappa} \mathbf{W}_s^\kappa \end{bmatrix} \\ 
-	\mathbf{W_2} &= \begin{bmatrix} \sqrt{\alpha_z^\sigma} \mathbf{W}_z^\sigma & 0 \\ 0 & \sqrt{\alpha_z^\kappa} \mathbf{W}_z^\kappa \end{bmatrix} \\
-	\mathbf{m_1^{ref}} &= \big ( \mathbf{m}_s^{\sigma , ref \, T} \mathbf{m}_s^{\kappa , ref \, T} \big )^T \\
-	\mathbf{m_2^{ref}} &= \big ( \mathbf{m}_z^{\sigma , ref \, T} \mathbf{m}_z^{\kappa , ref \, T} \big )^T \\
-	\mathbf{\hat{X}}^{n-1} &= \big ( 0 \, (\mathbf{X}^{n-1})^{-1} \big )
-	\end{split}
-	:name:
+    \begin{split}
+    \mathbf{J}^{n-1} &= \big ( \mathbf{J}^{\sigma , n-1} \mathbf{J}^{\kappa , n-1} \big ) \\
+    \mathbf{W_1} &= \begin{bmatrix} \sqrt{\alpha_s^\sigma} \mathbf{W}_s^\sigma & 0 \\ 0 & \sqrt{\alpha_s^\kappa} \mathbf{W}_s^\kappa \end{bmatrix} \\ 
+    \mathbf{W_2} &= \begin{bmatrix} \sqrt{\alpha_z^\sigma} \mathbf{W}_z^\sigma & 0 \\ 0 & \sqrt{\alpha_z^\kappa} \mathbf{W}_z^\kappa \end{bmatrix} \\
+    \mathbf{m_1^{ref}} &= \big ( \mathbf{m}_s^{\sigma , ref \, T} \mathbf{m}_s^{\kappa , ref \, T} \big )^T \\
+    \mathbf{m_2^{ref}} &= \big ( \mathbf{m}_z^{\sigma , ref \, T} \mathbf{m}_z^{\kappa , ref \, T} \big )^T \\
+    \mathbf{\hat{X}}^{n-1} &= \big ( 0 \, (\mathbf{X}^{n-1})^{-1} \big )
+    \end{split}
+    :name:
 
 where :math:`\mathbf{\hat{X}}^{n-1} = \textrm{diag} \{ m_1^{\kappa, n-1}, ... , m_M^{\kappa, n-1} \}`. The solution to eq. :eq:`Systemdm` is equivalent to the least-squares solution of:
 
 .. math::
-	\begin{bmatrix} \mathbf{W_d J}^{n-1} \\ \sqrt{\beta^n} \mathbf{W_1} \\ \sqrt{\beta^n} \mathbf{W_2} \\ \sqrt{\gamma^n/2} \, \mathbf{\hat{X}}^{n-1} \end{bmatrix} \delta \mathbf{m} =
-	\begin{bmatrix} \mathbf{W_d } ( \mathbf{d^{obs} - d}^{n-1} ) \\ \sqrt{\beta^n} \mathbf{W_1} ( \mathbf{m_1^{ref} - m}^{n-1} ) \\ \sqrt{\beta^n} \mathbf{W_2}( \mathbf{m^{ref} - m}^{n-1} ) \\ \sqrt{\gamma^n/2} \, \mathbf{\hat{X}}^{n-1} \mathbf{m}^{n-1} \end{bmatrix}
-	:name: SystemdmLSQ
+    \begin{bmatrix} \mathbf{W_d J}^{n-1} \\ \sqrt{\beta^n} \mathbf{W_1} \\ \sqrt{\beta^n} \mathbf{W_2} \\ \sqrt{\gamma^n/2} \, \mathbf{\hat{X}}^{n-1} \end{bmatrix} \delta \mathbf{m} =
+    \begin{bmatrix} \mathbf{W_d } ( \mathbf{d^{obs} - d}^{n-1} ) \\ \sqrt{\beta^n} \mathbf{W_1} ( \mathbf{m_1^{ref} - m}^{n-1} ) \\ \sqrt{\beta^n} \mathbf{W_2}( \mathbf{m^{ref} - m}^{n-1} ) \\ \sqrt{\gamma^n/2} \, \mathbf{\hat{X}}^{n-1} \mathbf{m}^{n-1} \end{bmatrix}
+    :name: SystemdmLSQ
 
 Once the step :math:`\delta \mathbf{m}` has been determined by the solution of eq. :eq:`Systemdm` or eq. :eq:`SystemdmLSQ`, the new model is given by:
 
 .. math::
-	\mathbf{m}^n = \mathbf{m}^{n-1} + \nu \delta \mathbf{m}
-	:name:
+    \mathbf{m}^n = \mathbf{m}^{n-1} + \nu \delta \mathbf{m}
+    :name:
 
 There are two conditions on the step length :math:`\nu`. First, if positivity of the layer susceptibilities is being enforced:
 
 .. math::
-	\nu \delta \kappa_j > -\kappa_j^{n-1}
-	:name: cond1
+    \nu \delta \kappa_j > -\kappa_j^{n-1}
+    :name: cond1
 
 must hold for all :math:`j=1,...,M`. Secondly, the objective function must be decreased by the addition of the
 step to the model:
 
 .. math::
-	\phi_d^n + \beta^n \phi_m^n - \gamma^n \phi_{LB}^n < \phi_d^{n-1} + \beta^n \phi_m^{n-1} - \gamma^n \phi_{LB}^{n-1}
-	:name: cond2
+    \phi_d^n + \beta^n \phi_m^n - \gamma^n \phi_{LB}^n < \phi_d^{n-1} + \beta^n \phi_m^{n-1} - \gamma^n \phi_{LB}^{n-1}
+    :name: cond2
 
 where :math:`\phi_d^n` is now the misfit computed using the full forward modelling for the new model :math:`\mathbf{m}^n`. To determine
 :math:`\mathbf{m}^n`, a step length, :math:`\nu`, of either 1, or the maximum value for which eq. :eq:`cond1` is true, whichever is greater, is
@@ -513,8 +513,8 @@ the greatest-allowed decrease in the misfit at any iteration, thus allowing stru
 introduced into the model. In program EM1DFM, the target misfit at the :math:`n^{th}` iteration is given by:
 
 .. math::
-	\phi_d^{n, tar} = \textrm{max} \big ( mfac \times \phi_d^{n-1}, chifac \times N \big )
-	:name:
+    \phi_d^{n, tar} = \textrm{max} \big ( mfac \times \phi_d^{n-1}, chifac \times N \big )
+    :name:
 
 where the user-supplied factor :math:`mfac` is such that :math:`0.1 \leq mfac \leq 0.5`.
 
@@ -551,24 +551,24 @@ at each iteration (Haber, 1997; Haber & Oldenburg, 2000; Li & Oldenburg, 2000; F
 2000). From eq. :eq:`Systemdm`, the GCV function for the :math:`n^{th}` iteration is given by:
 
 .. math::
-	GCV (\beta ) = \dfrac{\big \| \mathbf{W_d \hat{d} - W_d J}^{n-1} \mathbf{M}^{-1} \big ( \mathbf{J}^{n-1 \, T} \mathbf{W_d}T \mathbf{W_d \hat{d} + r} \big ) \big \|^2 }{\big [ \textrm{trace} \big ( \mathbf{I - W_d J}^{n-1} \mathbf{M}^{-1} \mathbf{J}^{n-1 \, T} \mathbf{W_d}^T \big )  \big ]^2}
-	:name: CGV
+    GCV (\beta ) = \dfrac{\big \| \mathbf{W_d \hat{d} - W_d J}^{n-1} \mathbf{M}^{-1} \big ( \mathbf{J}^{n-1 \, T} \mathbf{W_d}T \mathbf{W_d \hat{d} + r} \big ) \big \|^2 }{\big [ \textrm{trace} \big ( \mathbf{I - W_d J}^{n-1} \mathbf{M}^{-1} \mathbf{J}^{n-1 \, T} \mathbf{W_d}^T \big )  \big ]^2}
+    :name: CGV
 
 where
 
 .. math::
-	\begin{split}
-	\mathbf{M} (\beta) &= \bigg [ \mathbf{J}^{n-1 \, T} \mathbf{W_d}^T \mathbf{W_d} \mathbf{J}^{n-1} + \beta^n \sum_{i=1}^2 \mathbf{W_i}^T \mathbf{W_i} + \frac{\gamma^n}{2} \mathbf{\hat{X}}^{n-1 \, T} \mathbf{\hat{X}}^{n-1} \bigg ] \\
-	\mathbf{r} &= \beta^n \sum_{i=1}^2 \mathbf{W_i}^T \mathbf{W_i} \big ( \mathbf{m_i^{ref} - \mathbf{m}^{n-1}} \big ) + \frac{\gamma^n}{2} \mathbf{\hat{X}}^{n-1 \, T} \mathbf{\hat{X}}^{n-1} \mathbf{m}^{n-1}
-	\end{split}
-	:name:
+    \begin{split}
+    \mathbf{M} (\beta) &= \bigg [ \mathbf{J}^{n-1 \, T} \mathbf{W_d}^T \mathbf{W_d} \mathbf{J}^{n-1} + \beta^n \sum_{i=1}^2 \mathbf{W_i}^T \mathbf{W_i} + \frac{\gamma^n}{2} \mathbf{\hat{X}}^{n-1 \, T} \mathbf{\hat{X}}^{n-1} \bigg ] \\
+    \mathbf{r} &= \beta^n \sum_{i=1}^2 \mathbf{W_i}^T \mathbf{W_i} \big ( \mathbf{m_i^{ref} - \mathbf{m}^{n-1}} \big ) + \frac{\gamma^n}{2} \mathbf{\hat{X}}^{n-1 \, T} \mathbf{\hat{X}}^{n-1} \mathbf{m}^{n-1}
+    \end{split}
+    :name:
 
 and :math:`\mathbf{\hat{d} - d^{obs} - d}^{n-1}`. If :math:`\beta^*` is the value of the trade-off parameter that minimizes eq. :eq:`CGV` at the :math:`n^{th}` iteration, the actual value of
 :math:`\beta` used to compute the new model is given by:
 
 .. math::
-	\beta_n = \textrm{max} (\beta^*, bfac \times \beta^{n-1} )
-	:name: betachoice
+    \beta_n = \textrm{max} (\beta^*, bfac \times \beta^{n-1} )
+    :name: betachoice
 
 where the user-supplied factor :math:`bfac` is such that :math:`0.01<bfac<0.5`. As for Algorithm 2, this limit on the
 allowed decrease in the trade-off parameter prevents unnecessary structure being introduced into the model
@@ -598,8 +598,8 @@ using the linearized misfit, which uses the approximation given in eq. (45) for 
 The curvature of the L-curve is computed using the formula (Hansen, 1998):
 
 .. math::
-	C(\beta) = \frac{\zeta^\prime \eta^{\prime \prime } - \zeta^{\prime\prime} \eta^\prime}{\big ( (\zeta^\prime)^2 + (\eta^\prime)^2 \big )^{3/2}}
-	:name: zetaeq
+    C(\beta) = \frac{\zeta^\prime \eta^{\prime \prime } - \zeta^{\prime\prime} \eta^\prime}{\big ( (\zeta^\prime)^2 + (\eta^\prime)^2 \big )^{3/2}}
+    :name: zetaeq
 
 where :math:`\zeta = \textrm{log} \, \phi_d^{lin}` and :math:`\eta = \textrm{log}\, \phi_m`. The prime denotes differentiation with respect to log :math:`\beta`. As for both
 Algorithms 2 & 3, a restriction is imposed on how quickly the trade-off parameter can be decreased from one iteration to the next. The actual value of :math:`\beta` chosen for use at the
@@ -633,11 +633,11 @@ weighting of the smallest and flattest parts of the conductivity and susceptibil
 are computed for a test model :math:`\mathbf{m}^*`:
 
 .. math::
-	\begin{split}
-	\phi_m^\sigma &= acs \big \| \mathbf{W_s^\sigma} \big ( \mathbf{m}^* - \mathbf{m}_s^{\sigma, ref} \big ) \big \|^2 + acz \big \| \mathbf{W_z^\sigma} \big ( \mathbf{m}^* - \mathbf{m}_z^{\sigma, ref} \big ) \big \|^2 \\
-	\phi_m^\kappa &= ass \big \| \mathbf{W_s^\kappa} \big ( \mathbf{m}^* - \mathbf{m}_s^{\kappa, ref} \big ) \big \|^2 + asz \big \| \mathbf{W_z^\kappa} \big ( \mathbf{m}^* - \mathbf{m}_z^{\kappa, ref} \big ) \big \|^2
-	\end{split}
-	:name:
+    \begin{split}
+    \phi_m^\sigma &= acs \big \| \mathbf{W_s^\sigma} \big ( \mathbf{m}^* - \mathbf{m}_s^{\sigma, ref} \big ) \big \|^2 + acz \big \| \mathbf{W_z^\sigma} \big ( \mathbf{m}^* - \mathbf{m}_z^{\sigma, ref} \big ) \big \|^2 \\
+    \phi_m^\kappa &= ass \big \| \mathbf{W_s^\kappa} \big ( \mathbf{m}^* - \mathbf{m}_s^{\kappa, ref} \big ) \big \|^2 + asz \big \| \mathbf{W_z^\kappa} \big ( \mathbf{m}^* - \mathbf{m}_z^{\kappa, ref} \big ) \big \|^2
+    \end{split}
+    :name:
 
 The conductivity and susceptibility of the top :math:`N/5` layers in the test model are 0.02 S/m and 0.02 SI units
 respectively, and the conductivity and susceptibility of the remaining layers are 0.01 S/m and 0 SI units.
@@ -652,21 +652,52 @@ susceptibility model.
 Positive susceptibility
 ^^^^^^^^^^^^^^^^^^^^^^^
 
+ProgramEM1DFM can perform an unconstrained inversion for susceptibilities (along with the conductivities)
+as well as invert for values of susceptibility that are constrained to be positive. Following Li & Oldenburg
+(2000), the positivity constraint is implemented by incorporating a logarithmic barrier term in the objective
+function (see eqs. :eq:`ObjectiveFun` & :eq:`barrier_cond`). For the initial iteration, the coefficient of the logarithmic barrier term is chosen
+so that this term is of equal important to the rest of the objective function:
+
+.. math::
+    \gamma^0 = \frac{\phi_d^0 + \beta^0 \phi_m^0}{- \phi^0_{LB}}
+    :name:
+
+At subsequent iterations, the coefficient is reduced according to the formula:
+
+.. math::
+    \gamma^n = \big ( 1 - \textrm{min}(\nu^{n-1}, 0.925) \big ) \gamma^{n-1}
+
+where :math:`\nu^{n-1}` is the step length used at the previous iteration. As mentioned at the end of Section 2.5.1 **link**, when
+positivity is being enforced, the step length at any particular iteration must satisfy eq. :eq:`cond1`.
 
 
+Convergence criteria
+^^^^^^^^^^^^^^^^^^^^
 
+To determine when an inversion algorithm has converged, the following criteria are used (Gill et al., 1981):
 
+.. math::
+    \begin{split}
+    \Phi^{n-1} - \Phi^n &< \tau (1 + \Phi^n )\\
+    \| \mathbf{m}^{n-1} - \mathbf{m} \| &< \sqrt{\tau} (1 + \| \mathbf{m}^n \| )
+    \end{split}
+    :name:
 
+where :math:`\tau` is a user-specified parameter. The algorithm is considered to have converged when both of the above
+equations are satisfied. The default value of :math:`\tau` is 0.01.
 
+In case the algorithm happens directly upon the minimum, an additional condition is tested:
 
+.. math::
+    \| \mathbf{g}^n \| \leq \epsilon
+    :name:
 
+where :math:`\epsilon` is a small number close to zero, and where the gradient, :math:`\mathbf{g}^n`, at the :math:`n^{th}` iteration is given by:
 
-
-
-
-
-
-
-
+.. math::
+    \mathbf{g}^n = -2 \mathbf{J}^{n \, T} \mathbf{W_d}^T \mathbf{W_d} ( \mathbf{d^{obs}} - \mathbf{d}^n ) 
+    - 2 \beta^n \sum_{i=1}^2 \mathbf{W_i}^T \mathbf{W_i} \big ( \mathbf{m_i^{ref} - \mathbf{m}^{n-1}} \big )
+    - \gamma^n \mathbf{\hat{X}}^{n2T} \mathbf{m}^{n}
+    :name:
 
 
