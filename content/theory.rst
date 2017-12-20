@@ -6,34 +6,29 @@ Background theory
 Introduction
 ------------
 
-Program EM1DFM is designed to interpret frequency-domain, small loop, electromagnetic data. These data
-are measurements of the magnetic field due to currents and magnetization induced in the Earth by a sinusoidal
-time-varying current in a small transmitter loop. 
+The EM1DFM and EM1DFMFWD programs are designed to interpret frequency-domain, small loop, electromagnetic data over a 1D layered Earth.
+These programs model the Earth's frequency-domain electromagnetic response due to a small inductive loop source which carries a sinusoidal time-varying current. 
+The data are the secondary magnetic field which results from currents and magnetization induced in the Earth.
 
+.. _theory_source:
 
-Details regarding the source
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Details regarding the source and receiver
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The receiver loop is assumed to be sufficiently small that
-the measurements can be considered as point measurements of the magnetic field, and the transmitter loop
-is assumed to be sufficiently small that it can be represented by a magnetic dipole. Program EM1DFM
-can handle any combination of measurements made at different frequencies of the transmitter current, and
-for any separations and heights above the Earth’s surface of the transmitter and receiver loops. The loops
-can be oriented in the x-, y- or z-directions. Any combination of in phase and/or quadrature parts of the
-fields can be dealt with. Program EM1DFM accepts observations in four different forms: values of the
-secondary magnetic field (total minus free-space) normalized by the free-space field and given in parts-per-
-million, values of the secondary field normalized by the free-space field and given in percent, values of the
-secondary H-field in A/m, and values of the total H-field in A/m. If the transmitter and receiver have
-the same orientation, the x-, y- and z-components of the secondary field are normalized by the
-x-, y- and z-components of the free-space field respectively. If the transmitter and receiver have different orientations,
-the secondary field is normalized by the magnitude of the free-space field.
+EM1DFM and EM1DFMFWD assume that the transmitter loop size is sufficiently small that it may be represented by a magnetic dipole.
+The programs also assume that each receiver loop is sufficiently small and that they may be considered point receivers; i.e.
+the spatial variation in magnetic flux through the receiver loop is negligible.
 
+.. _theory_domain:
 
 Details regarding the domain
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Program EM1DFM models the Earth beneath a measurement location as a stack of uniform, horizontal
-layers. It is the physical properties of the layers that are obtained during the inversion of all measurements
+EM1DFM and EM1DFMFWD model the Earth's response for measurements above a stack of uniform, horizontal
+layers. **The coordinate system used for describing the Earth models has z as positive downwards, with the
+surface of the Earth at z=0**. The z-coordinates of the source and receiver locations (which must be above
+the surface) are therefore negative. Each layer is defined by a thickness, an electrical conductivity, and a magnetic susceptibility (if desired).
+It is the physical properties of the layers that are obtained during the inversion of all measurements
 gathered at a single location, with the depths to the layer interfaces remaining fixed. If measurements made
 at multiple locations are being interpreted, the corresponding one-dimensional models are juxtaposed to
 create a two-dimensional image of the subsurface.
@@ -51,10 +46,30 @@ invert for the logarithms of the layer susceptibilities. Near-zero values of sus
 important and large values would be overestimated (Zhang & Oldenburg, 1997). Therefore susceptibilities
 are found directly by the inversion, with the option of imposing a positivity constraint.
 
-The coordinate system used for describing the Earth models has z as positive downwards, with the
-surface of the Earth at z=0. The z-coordinates of the source and receiver locations (which must be above
-the surface) are therefore negative.
+**Add picture of model**
 
+
+.. _theory_data:
+
+Details regarding the data
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+For a magnetic dipole source oriented in the x, y and/or z-direction, EM1DFM and EM1DFMFWD can handle any combination of:
+
+    - frequencies for the transmitter current
+    - separations and heights for the transmitter and receiver(s)
+    - in phase and quadrature components of the response
+    - x, y and z-components of the response
+
+Programs EM1DFM and EM1DFMFWD accept observations in four different forms: values of the
+secondary magnetic field (total minus free-space) normalized by the free-space field and given in parts-per-
+million, values of the secondary field normalized by the free-space field and given in percent, values of the
+secondary H-field in A/m, and values of the total H-field in A/m. If the transmitter and receiver have
+the same orientation, the x-, y- and z-components of the secondary field are normalized by the
+x-, y- and z-components of the free-space field respectively. If the transmitter and receiver have different orientations,
+the secondary field is normalized by the magnitude of the free-space field.
+
+.. _theory_fwd:
 
 Forward Modeling
 ----------------
@@ -70,24 +85,23 @@ uses the z-component of the Schelkunoff F-potential (Ward & Hohmann, 1987):
     \end{align}
     :name: Schelkunoff
 
-where :math:`\mathbf{E}` and :math:`\mathbf{H}` are the electric and magnetic fields, :math:`\sigma` and :math:`\mu` 
-are the conductivity and permeability of the uniform region to which the above equations refer, and a time-dependence of
-:math:`e^{i\omega t}` has been assumed.
+where :math:`\mathbf{E}`, :math:`\mathbf{H}`, :math:`\sigma` and :math:`\mu` are the electric field, magnetic field,
+conductivity and magnetic permeability, respectively, within the uniform region for which this equation is valid. Note that the time-dependence :math:`e^{i\omega t}` has been suppressed.
+The permeability is related to the susceptibility (:math:`\kappa`) via the following equation:
 
-In the :math:`j^{th}` layer (where :math:`j>0`) with conductivity :math:`\sigma` and permeability :math:`\mu`,the
+.. math::
+    \mu = \mu_0 \big ( 1 + \kappa \big )
+    :name: susc_def
+
+where :math:`\mu_0` is the permeability of free space. 
+In the :math:`j^{th}` layer (where :math:`j>0`) with conductivity :math:`\sigma_j` and permeability :math:`\mu_j`, the
 z-component of the Schelkunoff potential satisfies the following equation (assuming the quasi-static approximation):
 
 .. math::
-    \nabla^2 \mathbf{F_j} - i\omega \mu_j \sigma_j \mathbf{F} = 0
+    \nabla^2 F_j - i\omega \mu_j \sigma_j F = 0
     :name: Helmholtz
 
-The permeability is related to the susceptibility :math:`\kappa_j` via the following equation:
-
-.. math::
-    \mu_j = \mu_0 \big ( 1 + \kappa_j \big )
-    :name: susc_def
-
-where :math:`\mu_0` is the permeability of free space. Applying the two-dimensional Fourier transform to eq. :eq:`Helmholtz` gives:
+Applying the two-dimensional Fourier transform to eq. :eq:`Helmholtz` gives:
 
 .. math::
     \frac{d^2 \tilde{F}_j}{dz^2} - u_j^2 \tilde{F}_j = 0
@@ -100,31 +114,30 @@ solution to this equation is:
     \tilde{F}_j (k_x,k_y,z,\omega ) = D_j (k_x, k_y, \omega) \, e^{-u_j (z-z_j)} + U_j (k_x, k_y, \omega) \, e^{u_j (z-z_j)}
     :name: Helmholtz_gen_sol
 
-where :math:`D_j` and :math:`U_j` are the coefficients of the downward and upgrade decaying parts of the solution, respectively. At
+where :math:`D_j` and :math:`U_j` are the coefficients of the downward and upward-decaying parts of the solution, respectively. At
 the interface between layer :math:`j-1` and layer :math:`j`, which is at depth :math:`z_j`, the conditions on :math:`\tilde{F}` are:
 
 .. math::
     \begin{align}
-    \tilde{F}_{j-1} \Big |_{z-z_j} &= \tilde{F}_j \Big |_{z-z_j}, \\
-    \dfrac{1}{\mu_{j-1}} \dfrac{d \tilde{F}_{j-1}}{dz} \Bigg |_{z-z_j} &= \dfrac{1}{\mu_{j}} \dfrac{d \tilde{F}_{j}}{dz} \Bigg |_{z-z_j}
+    \tilde{F}_{j-1} \Big |_{z=z_j} &= \tilde{F}_j \Big |_{z=z_j}, \\
+    \dfrac{1}{\mu_{j-1}} \dfrac{d \tilde{F}_{j-1}}{dz} \Bigg |_{z=z_j} &= \dfrac{1}{\mu_{j}} \dfrac{d \tilde{F}_{j}}{dz} \Bigg |_{z=z_j}
     \end{align}
     :name: bound_cond
 
-Applying these conditions to the solutions in layer :math:`j` and layer :math:`j-1` (:math:`j \geq 2` ) gives:
+Applying these conditions to the solutions for :math:`j \geq 2` gives:
 
 .. math::
     \begin{bmatrix} e^{-u_{j-1} t_{j-1}} & e^{u_{j-1} t_{j-1}} \\ - \frac{u_{j-1}}{\mu_{j-1}} e^{-u_{j-1} t_{j-1}} & \frac{u_{j-1}}{\mu_{j-1}} e^{u_{j-1} t_{j-1}} \end{bmatrix}
-    \begin{bmatrix} D_{j-1} \\ U{j-1} \end{bmatrix} =
+    \begin{bmatrix} D_{j-1} \\ U_{j-1} \end{bmatrix} =
     \begin{bmatrix} 1 & 1 \\ -\frac{u_j}{\mu_j} & \frac{u_j}{\mu_j} \end{bmatrix}
-    \begin{bmatrix} D_{j} \\ U{j} \end{bmatrix},
+    \begin{bmatrix} D_{j} \\ U_{j} \end{bmatrix},
     :name: Layer_soln
 
-where :math:`t_{j-1} = z_j - z_{j-1}` is the thickness of layer :math:`j-1`. Rearranging, explicitly factoring out from the matrix
-the exponential term whose argument has a positive real part, gives:
+where :math:`t_{j-1} = z_j - z_{j-1}` is the thickness of layer :math:`j-1`. Through factoring and rearranging, the above equation can be re-expressed as:
 
 .. math::
     \begin{bmatrix} D_{j-1} \\ U_{j-1} \end{bmatrix} =
-    e^{u_{j-1}t{j-1}} \mathbf{M_j} \begin{bmatrix} D_{j} \\ U{j} \end{bmatrix},
+    e^{u_{j-1}t{j-1}} \mathbf{M_j} \begin{bmatrix} D_{j} \\ U_{j} \end{bmatrix},
     :name:
 
 where
@@ -132,9 +145,10 @@ where
 .. math::
     \mathbf{M_j} = \begin{bmatrix} \frac{1}{2} \Big ( 1 + \frac{\mu_{j-1} u_j}{\mu_j u_{j-1}} \Big ) & \frac{1}{2} \Big ( 1 - \frac{\mu_{j-1} u_j}{\mu_j u_{j-1}} \Big ) \\
     \frac{1}{2} \Big ( 1 - \frac{\mu_{j-1} u_j}{\mu_j u_{j-1}} \Big ) e^{-2u_{j-1} t_{j-1}} & \frac{1}{2} \Big ( 1 + \frac{\mu_{j-1} u_j}{\mu_j u_{j-1}} \Big ) e^{-2u_{j-1} t_{j-1}} \end{bmatrix}
+    \;\;\;\; \textrm{for} \;\;\;\; j \geq 2
     :name:
 
-for :math:`j \geq 2`. In layer 0 (the air interface), :math:`\tilde{F}` is given by:
+In layer 0 (the air interface), :math:`\tilde{F}` is given by:
 
 .. math::
     \tilde{F}_0 = D_0 e^{-u_0 z} + U_0 e^{u_0 z},
@@ -153,7 +167,7 @@ and
     \frac{1}{2} \Big ( 1 - \frac{\mu_0 u_1}{\mu_1 u_0} \Big ) & \frac{1}{2} \Big ( 1 + \frac{\mu_0 u_1}{\mu_1 u_0} \Big ) \end{bmatrix}
     :name:
 
-Application of eqs. :eq:`Layer_soln` and :eq:`Layer_soln_0` relates the coefficients, :math:`U_0` and :math:`D_0`, of the solution in the air to those, :math:`U_M` and :math:`D_M`, of
+Using eqs. :eq:`Layer_soln` and :eq:`Layer_soln_0`, we can relate the coefficients :math:`U_0` and :math:`D_0` of the solution in the air to the coefficients :math:`U_M` and :math:`D_M` of
 the solution in the basement halfspace:
 
 .. math::
@@ -161,7 +175,7 @@ the solution in the basement halfspace:
     :name: Matrix_soln
 
 There is no upward-decaying part of the solution in the basement halfspace (thus :math:`U_M = 0`). In the air, the
-downward-decaying part is due to the source (thus :math:`D_0 = D_0^s`). Therefore eq. :eq:`Matrix_soln` can be rewritten as:
+downward-decaying part is due to the source (thus :math:`D_0 = D_0^s`). Eq. :eq:`Matrix_soln` can therefore be rewritten as:
 
 .. math::
     \begin{bmatrix} D_0^2 \\ U_0 \end{bmatrix} = E \, \mathbf{ P} \begin{bmatrix} D_M \\ 0 \end{bmatrix}
@@ -170,7 +184,7 @@ downward-decaying part is due to the source (thus :math:`D_0 = D_0^s`). Therefor
 where the matrix :math:`\mathbf{P}` is given by
 
 .. math::
-    \mathbf{P} = \mathbf{M_1} \prod_{j=1}^M \mathbf{M_j}
+    \mathbf{P} = \mathbf{M_1} \prod_{j=2}^M \mathbf{M_j}
     :name: M_prod
 
 and the factor :math:`E` is given by:
@@ -218,7 +232,8 @@ For a unit vertical magnetic dipole source at a height :math:`h` (i.e. :math:`z 
 
 (Ward & Hohmann, 1987, eq. 4.106). Once whichever of these terms is appropriate is substituted into
 eq. :eq:`Final_soln`, the solution is completed by converting the required inverse two-dimensional Fourier transform to
-a Hankel transform, and using eq. :eq:`Schelkunoff` to obtain the three components of the H-field above the Earth model (:math:`z<0`):
+a Hankel transform, and using eq. :eq:`Schelkunoff` to obtain the three components of the H-field above the Earth model (:math:`z<0`).
+For a z-directed magnetic dipole source at (:math:`0,0,-h`) such that :math:`h>0`:
 
 .. math::
     \begin{align}
@@ -228,7 +243,7 @@ a Hankel transform, and using eq. :eq:`Schelkunoff` to obtain the three componen
     \end{align}
     :name: Soln_zdip
 
-for a z-directed magnetic dipole source at (:math:`0,0,-h`), :math:`h>0`, and 
+And for a x-directed magnetic dipole source at (:math:`0,0,-h`) such that :math:`h>0`:
 
 .. math::
     \begin{align}
@@ -240,27 +255,26 @@ for a z-directed magnetic dipole source at (:math:`0,0,-h`), :math:`h>0`, and
     \end{align}
     :name: Soln_xdip
 
-for a x-directed magnetic dipole source at (:math:`0,0,-h`), :math:`h>0`.
 
 The Hankel transforms in eqs. :eq:`Soln_zdip` and :eq:`Soln_xdip` are computed using the digital filtering routine of Anderson
 (1982). The kernels of these equations are pre-computed at a certain number of logarithmically-spaced values of :math:`\lambda`.
 Anderson’s routine then extracts the values of the kernels at the values of :math:`\lambda` it requires by cubic
 spline interpolation. The number of values of :math:`\lambda` at which the kernels are pre-computed (50 minimum) can
 be specified in the input file “em1dfm.in”; see “line 11” in the input file description (Section 3.1.1 of the
-Manual).
+Manual) **link**.
 
-There are three places where previously-computed components of eqs. eqs. :eq:`Soln_zdip` and :eq:`Soln_xdip` can be re-used. The
+There are three places where previously-computed components of eqs. :eq:`Soln_zdip` and :eq:`Soln_xdip` can be re-used. The
 propagation of the matrices through the layers depends on frequency, and must be re-done for each different
 value. However, the propagated matrix :math:`\mathbf{P}`, and hence the ratio :math:`P_{21}/P_{11}`, does not depend on the relative
 location and orientation of the transmitter and receiver, and so can be re-used for all transmitters and
 receivers for the same frequency. Furthermore, if there are multiple transmitter-receiver pairs with the same
 height (and the same frequency), there is no difference in the kernels of their Hankel transforms, and so the
 values of the kernels computed for one pair can be re-used for all the others. It is to ensure this grouping of
-the survey parameters that the observations file is structured the way it is (see Section 3.1.2 of the Manual).
+the survey parameters that the observations file is structured the way it is (see Section 3.1.2 of the Manual) **link**.
 
-The individual propagation matrices :math:`\mathbf{M_j}`, and each matrix computed in the construction of the propa-
-gation matrix :math:`\mathbf{P}`, are saved in the forward-modelling routine. These are then re-used in the computation of the sensitivities.
+The individual propagation matrices :math:`\mathbf{M_j}`, and each matrix computed in the construction of the propagation matrix :math:`\mathbf{P}`, are saved in the forward-modelling routine. These are then re-used in the computation of the sensitivities.
 
+.. _theory_sensitivities:
 
 Computing Sensitivities
 -----------------------
@@ -268,7 +282,7 @@ Computing Sensitivities
 The inverse problem of determining the conductivity and/or susceptibility of the Earth from electromagnetic
 measurements is nonlinear. Program EM1DFM uses an iterative procedure to solve this problem. At each
 iteration the linearized approximation of the full nonlinear problem is solved. This requires the Jacobian
-matrix of sensitivities, :math:`\mathbf{J} = (\mathbf{J^\sigma}, \mathbf{J^\kappa})` where:
+matrix for the sensitivities, :math:`\mathbf{J} = (\mathbf{J^\sigma}, \mathbf{J^\kappa})` where:
 
 .. math::
     \begin{align}
@@ -277,16 +291,16 @@ matrix of sensitivities, :math:`\mathbf{J} = (\mathbf{J^\sigma}, \mathbf{J^\kapp
     \end{align}
     :name: Sensitivity
 
-in which :math:`d_i` is the :math:`i^{th}` observation, and :math:`\sigma_j` and :math:`\kappa_j` are the conductivity and susceptibility of the :math:`j^th` layer.
+in which :math:`d_i` is the :math:`i^{th}` observation, and :math:`\sigma_j` and :math:`\kappa_j` are the conductivity and susceptibility of the :math:`j^{th}` layer.
 
-The algorithm for computing the sensitivities is obtained by differentiating the expressions for the H-
-fields (see Section 2.3) with respect to the model parameters (Farquharson et al., 2000). For example, the
-sensitivity with respect to :math:`m_j` (either the conductivity or susceptibility of the :math:`j^th` layer) of the
+The algorithm for computing the sensitivities is obtained by differentiating the expressions for the H-fields (see :eq:`Soln_zdip` and :eq:`Soln_xdip`)
+with respect to the model parameters (Farquharson et al., 2000). For example, the
+sensitivity with respect to :math:`m_j` (either the conductivity or susceptibility of the :math:`j^{th}` layer) of the
 z-component of the H-field for a z-directed magnetic dipole source is given by differentiating the third expression in :eq:`Soln_zdip`:
 
 .. math::
     \frac{\partial H_z}{\partial m_j} (x,y,z,\omega) = \frac{1}{4\pi} \int_0^\infty \Big ( e^{-\lambda |z+h|} + \frac{\partial}{\partial m_j} \Bigg [ \frac{P_{21}}{P_{11}} \Bigg ] e^{\lambda (z-h)} \Big ) \lambda^2 J_0(\lambda r) d\lambda
-    :name:
+    :name: Sensitivity_z
 
 The derivative of the coefficient is simply:
 
@@ -294,13 +308,13 @@ The derivative of the coefficient is simply:
     \frac{\partial}{\partial m_j} \Bigg [ \frac{P_{21}}{P_{11}} \Bigg ] = \frac{\partial P_{21}}{\partial m_j} \frac{1}{P_{11}} - \frac{\partial P_{11}}{\partial m_j} \frac{P{21}}{P_{11}^2}
     :name:
 
-where :math:`P_{11}` and :math:`P_{21}` are elements of the propagation matrix :math:`\mathbf{P}` given by eq. :eq:`M_prod`. The derivative of :math:`\mathbf{P}` with respect to :math:`m_j` (:math:`1 \leq j \leq M-1`) is
+where :math:`P_{11}` and :math:`P_{21}` are elements of the propagation matrix :math:`\mathbf{P}` given by eq. :eq:`M_prod`. The derivative of :math:`\mathbf{P}` with respect to :math:`m_j` (for :math:`1 \leq j \leq M-1`) is
 
 .. math::
     \frac{\partial \mathbf{P}}{\partial m_j} = \mathbf{M_1 M_2 ... M_{j-1}} \Bigg ( \frac{\partial \mathbf{M_j}}{\partial m_j} \mathbf{M_{j+1}} + \mathbf{M_j} \frac{\partial \mathbf{M_{j+1}}}{\partial m_j} \Bigg ) \mathbf{M_{j+2} ... M_M}
     :name:
 
-The sensitivities with respect to the conductivity and susceptibility of the basement halfspace are given by"
+The sensitivities with respect to the conductivity and susceptibility of the basement halfspace are given by
 
 .. math::
     \frac{\partial \mathbf{P}}{\partial m_M} = \mathbf{M_1 M_2 ... M_{M-1}} \frac{\partial \mathbf{M_M}}{\partial m_M} 
@@ -309,7 +323,7 @@ The sensitivities with respect to the conductivity and susceptibility of the bas
 The derivatives of the individual layer matrices with respect to the conductivities and susceptibilities are
 straightforward to derive, and are not given here.
 
-Just as for the forward modelling, the Hankel transform in eq. (32), and those in the corresponding
+Just as for the forward modelling, the Hankel transform in eq. :eq:`Sensitivity_z`, and those in the corresponding
 expressions for the sensitivities of the other observations, are computed using the digital filtering routine of Anderson (1982).
 
 The partial propagation matrices
@@ -321,20 +335,26 @@ The partial propagation matrices
 are computed during the forward modelling, and saved for re-use during the sensitivity computations. This
 sensitivity-equation approach therefore has the efficiency of an adjoint-equation approach.
 
+.. _theory_inversion:
 
 Inversion Methodologies
 -----------------------
 
-In program EM1DFM, there are four different inversion algorithms. They all have the same general formulation (described in Section 2.5.1), but differ in their treatment of the trade-off parameter (see Sections 2.5.2
-to 2.5.5). In addition, there are four possibilities for the Earth model constructed by the inversion: (a) just conductivity, (b) just susceptibility (with positivity enforced), (c) both conductivity and susceptibility (with
-positivity of the susceptibilities enforced), and (d) both conductivity and susceptibility (without the positivity constraint).
+In program EM1DFM, there are four different inversion algorithms. They all have the same :ref:`general formulation <theory_inversion_gen>`, but differ in their treatment of the trade-off parameter (see :ref:`fixed trade-off <theory_inversion_fixed>`, :ref:`discrepency principle <theory_inversion_disc>`, :ref:`GCV <theory_inversion_gcv>` and :ref:`L-curve criterion <theory_inversion_lcurve>`).
+In addition, there are four possibilities for the Earth model constructed by the inversion: 
+
+    1) conductivity only
+    2) susceptibility only (with positivity enforced)
+    3) conductivity and susceptibility (with positivity of the susceptibilities enforced)
+    4) conductivity and susceptibility (without the positivity constraint)
+
+.. _theory_inversion_gen:
 
 General formulation
 ^^^^^^^^^^^^^^^^^^^
 
 The aim of each inversion algorithm is to construct the simplest model that adequately reproduces the
-observations. This is achieved by posing the inverse problem as an optimization problem in which the model
-is sought that minimizes the objective function:
+observations. This is achieved by posing the inverse problem as an optimization problem in which we recover the model that minimizes the objective function:
 
 .. math::
     \Phi = \phi_d + \beta \phi_m - \gamma \phi_{LB}
@@ -346,7 +366,7 @@ The three components of this objective function are as follows. :math:`\phi_d` i
     \phi_d = \| \mathbf{W_d} (\mathbf{d - d^{obs}} ) \|^2
     :name:
 
-where :math:`\| \, \cdot \. \|` represents the :math:`l_2`-norm, :math:`d^{obs}` is the vector containing the
+where :math:`\| \, \cdot \, \|` represents the :math:`l_2`-norm, :math:`d^{obs}` is the vector containing the
 :math:`N` observations, and :math:`d` is the forward-modelled data. It is assumed that the noise in the observations is Gaussian and uncorrelated, and that the
 estimated standard deviation of the noise in the :math:`i^{th}` observation is of the form :math:`s_0 \hat{s}_i`, where :math:`\hat{s}_i` indicates the
 amount of noise in the :math:`i^{th}` observation relative to that in the others, and is a scale factor that specifies
@@ -361,7 +381,7 @@ The model-structure component of the objective function is :math:`\phi_m`. In it
 
 .. math::
     \begin{split}
-    \phi_m =& \alpha_s^\sigma \big \| \mathbf{W_s^\sigma} \big ( \mathbf{m^\sigma - m_s^{\sigma , ref}} \big ) \big \|^2\\
+    \phi_m =& \; \alpha_s^\sigma \big \| \mathbf{W_s^\sigma} \big ( \mathbf{m^\sigma - m_s^{\sigma , ref}} \big ) \big \|^2\\
     &+ \alpha_z^\sigma \big \| \mathbf{W_z^\sigma} \big ( \mathbf{m^\sigma - m_z^{\sigma , ref}} \big ) \big \|^2\\
     &+ \alpha_s^\kappa \big \| \mathbf{W_s^\kappa} \big ( \mathbf{m^\kappa - m_s^{\kappa , ref}} \big ) \big \|^2\\
     &+ \alpha_z^\kappa \big \| \mathbf{W_z^\kappa} \big ( \mathbf{m^\kappa - m_z^{\kappa , ref}} \big ) \big \|^2
@@ -387,13 +407,13 @@ where :math:`t_j` is the thickness of the :math:`j^{th}` layer. And the matricie
     & & & & & 0 \end{bmatrix}
     :name:
 
-The rows of any of these four weighting matricescan be scaled if desired (see Section **link**). The
+The rows of any of these four weighting matrices can be scaled if desired (see Section 3.1.9 of the manual**link**). The
 vectors :math:`\mathbf{m_s^{\sigma , ref}}`, :math:`\mathbf{m_z^{\sigma , ref}}`, :math:`\mathbf{m_s^{\kappa , ref}}` and :math:`\mathbf{m_z^{\kappa , ref}}`
 contain the layer conductivities/susceptibilities for the four possible reference models. The four terms in
 :math:`\phi_m` therefore correspond to the “smallest” and “flattest” terms for the
 conductivity and susceptibility parts of the model. The relative importance of the four terms is governed by
 the coefficients :math:`\mathbf{\alpha_s^{\sigma}}`, :math:`\mathbf{\alpha_z^{\sigma}}`, :math:`\mathbf{\alpha_s^{\kappa}}` and :math:`\mathbf{\alpha_z^{\kappa}}`
-, which are discussed in Section **link**. :math:`\beta` is the trade-off parameter that
+, which are discussed in Section 2.5.6 **link**. :math:`\beta` is the trade-off parameter that
 balances the opposing effects of minimizing the misfit and minimizing the amount of structure in the model.
 It is the different ways in which :math:`\beta` is determined that distinguish the four inversion algorithms in program
 EM1DFM from one another. They are described in the next sections.
@@ -401,27 +421,27 @@ EM1DFM from one another. They are described in the next sections.
 Finally, the third component of the objective function is a logarithmic barrier term:
 
 .. math::
-    \phi_{LB} = \sum_{j-1}^M \textrm{log} \, c\kappa_j
+    \phi_{LB} = \sum_{j-1}^M \textrm{log} \, (c\kappa_j)
     :name: barrier_cond
 
 where :math:`c` is a constant, usually equal to 1. This term is how the positivity constraint on the layer susceptibilities
 is enforced. It, and its coefficient :math:`\gamma`, are described in Section 2.5.7 (**link**.
 
-As mentioned in Section 2.4 (**link**), the inverse problem considered here is nonlinear. It is solved using an
+As mentioned in the :ref:`computing sensitivities <theory_sensitivities>` section, the inverse problem considered here is nonlinear. It is solved using an
 iterative procedure. At the :math:`n^{th}` iteration, the actual objective function being minimized is:
 
 .. math::
     \Phi^n = \phi_d^n + \beta^n \phi_m^n - \gamma^n \phi^n_{LB}
     :name: Objective_Fcn
 
-In the misfit :math:`\phi_d^n`, the forward-modelled data :math:`d_n` are those for the model that is sought at this iteration. They
+In the data misfit :math:`\phi_d^n`, the forward-modelled data :math:`d_n` are the data for the model that is sought at the current iteration. These data
 are approximated by:
 
 .. math::
     \mathbf{d^n} = \mathbf{d}^{n-1} + \mathbf{J}^{\sigma, n-1} \delta \mathbf{m}^\sigma + \mathbf{J}^{\kappa, n-1} \delta \mathbf{m}^\kappa
     :name: DataPerturb
 
-where :math:`\delta \mathbf{m}^\sigma = \mathbf{m}^{\sigma , n} - \mathbf{m}^{\sigma , n-1}` \& :math:`\delta \mathbf{m}^\kappa = \mathbf{m}^{\kappa , n} - \mathbf{m}^{\kappa , n-1}`, and
+where :math:`\delta \mathbf{m}^\sigma = \mathbf{m}^{\sigma , n} - \mathbf{m}^{\sigma , n-1}\;` \& :math:`\;\delta \mathbf{m}^\kappa = \mathbf{m}^{\kappa , n} - \mathbf{m}^{\kappa , n-1}`, and
 :math:`\mathbf{J}^{\sigma , n-1}` \& :math:`\mathbf{J}^{\kappa , n-1}` are the two halves of the Jacobian matrix given by :eq:`Sensitivity` and evaluated for the model from the previous iteration. At
 the :math:`n^{th}` iteration, the problem to be solved is that of finding the change, (:math:`\delta \mathbf{m}^\sigma , \delta \mathbf{m}^\kappa`) to the model which
 minimizes the objective function :math:`\Phi^n`. Differentiating eq. :eq:`Objective_Fcn` with respect to the components of :math:`\delta \mathbf{m}^\sigma` \& :math:`\delta \mathbf{m}^\kappa`, and
@@ -430,9 +450,9 @@ are straightforward to calculate. However, a further approximation must be made 
 
 .. math::
     \begin{split}
-    \frac{\partial \phi^n{LB}}{\partial \delta m_k^\kappa} &= \frac{\partial}{\partial \delta \kappa_k} \sum_{j=1}^M \textrm{log} \big ( \kappa_j^{n-1} + \delta \kappa_j \big ) \\
+    \frac{\partial \phi^n_{LB}}{\partial \delta m_k^\kappa} &= \frac{\partial}{\partial \delta \kappa_k} \sum_{j=1}^M \textrm{log} \big ( \kappa_j^{n-1} + \delta \kappa_j \big ) \\
     &= \frac{1}{\kappa_k^{n-1} + \delta \kappa_j} \\
-    & \approx \frac{1}{\kappa_k^{n-1}} \Big ( 1 - \frac{\delta \kappa_k}{\kappa_k^{n-1}} \Big )
+    & \approx \frac{1}{\kappa_k^{n-1}} \Bigg ( 1 - \frac{\delta \kappa_k}{\kappa_k^{n-1}} \Bigg )
     \end{split}
     :name:
 
@@ -447,7 +467,7 @@ The linear system of equations to be solved for (:math:`\delta \mathbf{m}^\sigma
     \end{split}
     :name: Systemdm
 
-where:
+where :math:`T` denotes the transpose and:
 
 .. math::
     \begin{split}
@@ -487,8 +507,10 @@ step to the model:
     :name: cond2
 
 where :math:`\phi_d^n` is now the misfit computed using the full forward modelling for the new model :math:`\mathbf{m}^n`. To determine
-:math:`\mathbf{m}^n`, a step length, :math:`\nu`, of either 1, or the maximum value for which eq. :eq:`cond1` is true, whichever is greater, is
-tried. If eq. (57) is true for this step length, it is accepted. If eq. :eq:`cond2` is not true, :math:`\nu` is decreased by factors of 2 until it is true.
+:math:`\mathbf{m}^n`, a step length (:math:`\nu`) of either 1 or the maximum value for which eq. :eq:`cond1` is true (whichever is greater) is
+tried. If eq. :eq:`cond2` is true for the step length, it is accepted. If eq. :eq:`cond2` is not true, :math:`\nu` is decreased by factors of 2 until it is true.
+
+.. _theory_inversion_fixed:
 
 Algorithm 1: fixed trade-off parameter
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -499,10 +521,12 @@ squares solution of eq. :eq:`SystemdmLSQ` is used. This is computed using the su
 involve a line search over trial values of :math:`\beta` at each iteration. If the appropriate value of :math:`\beta` is not known, it
 can be found using this algorithm by trail-and-error. This may or may not be time-consuming.
 
+.. _theory_inversion_disc:
+
 Algorithm 2: discrepancy principle
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If a complete description of the noise in a set of observations is available, that is, both :math:`s_0` and :math:`\hat{s}_i \: (i=1,...,N)` are known, the expectation of the misfit,
+If a complete description of the noise in a set of observations is available - that is, both :math:`s_0` and :math:`\hat{s}_i \: (i=1,...,N)` are known - the expectation of the misfit,
 :math:`E (\phi_d)`, is equal to the number of observations :math:`N`. Algorithm 2 therefore attempts to choose the trade-off parameter so that the misfit for the final model is equal to a target
 value of :math:`chifac \times N`. If the noise in the observations is well known, :math:`chifac` should equal 1. However, :math:`chifac` can be adjusted by the user to give a target misfit appropriate for a particular data-set. If a misfit as small as the target value cannot be achieved, the algorithm searches for the smallest possible misfit.
 
@@ -523,16 +547,17 @@ LSQR of Paige & Saunders (1982). The line search at each iteration moves along t
 is bracketed, in which case a bisection search is used to converge to the target, or the minimum misfit
 (:math:`> \phi_d^{n-1}`) is bracketed, in which case a golden section search (for example, Press et al., 1986) is used to
 converge to the minimum. The starting value of :math:`\beta` for each line search is :math:`\beta^{n-1}`. For the first iteration, the :math:`\beta \, (=\beta_0)` for the line search is given by
-:math:`N/\phi_m (\mathbf{m}^\dagger)`, where :math:`\mathbf{m}^\dagger` contains typical values of conductivity and/or susceptibility. (Specifically, :math:`\mathbf{m}^\dagger` is a model whose top
+:math:`N/\phi_m (\mathbf{m}^\dagger)`, where :math:`\mathbf{m}^\dagger` contains typical values of conductivity and/or susceptibility. Specifically, :math:`\mathbf{m}^\dagger` is a model whose top
 :math:`M/5` layers have a conductivity of 0.02 S/m and susceptibility of 0.02 SI units, and whose remaining layers have a conductivity of 0.01 S/m and
 susceptibility of 0 SI units. Also, the reference models used in the computation of :math:`\phi_m (\mathbf{m}^\dagger )` are homogeneous
-halfspaces of 0.01 S/m and 0 SI units.) The line search is efficient, but does involve the full forward modelling to compute the misfit for each trial value of :math:`\beta`.
+halfspaces of 0.01 S/m and 0 SI units. The line search is efficient, but does involve the full forward modelling to compute the misfit for each trial value of :math:`\beta`.
 
+.. _theory_inversion_gcv:
 
 Algorithm 3: GCV criterion
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If only the relative amount of noise in the observations is known, that is, :math:`\hat{s}_i (i=1,...,N)` is known but not :math:`s_0`,
+If only the relative amount of noise in the observations is known - that is, :math:`\hat{s}_i (i=1,...,N)` is known but not :math:`s_0` -
 the appropriate target value for the misfit cannot be determined, and hence Algorithm 2 is not the most
 suitable. The generalized cross-validation (GCV) method provides a means of estimating, during the course
 of an inversion, a value of the trade-off parameter that results in an appropriate fit to the observations, and
@@ -552,7 +577,7 @@ at each iteration (Haber, 1997; Haber & Oldenburg, 2000; Li & Oldenburg, 2000; F
 
 .. math::
     GCV (\beta ) = \dfrac{\big \| \mathbf{W_d \hat{d} - W_d J}^{n-1} \mathbf{M}^{-1} \big ( \mathbf{J}^{n-1 \, T} \mathbf{W_d}T \mathbf{W_d \hat{d} + r} \big ) \big \|^2 }{\big [ \textrm{trace} \big ( \mathbf{I - W_d J}^{n-1} \mathbf{M}^{-1} \mathbf{J}^{n-1 \, T} \mathbf{W_d}^T \big )  \big ]^2}
-    :name: CGV
+    :name: GCV
 
 where
 
@@ -563,7 +588,7 @@ where
     \end{split}
     :name:
 
-and :math:`\mathbf{\hat{d} - d^{obs} - d}^{n-1}`. If :math:`\beta^*` is the value of the trade-off parameter that minimizes eq. :eq:`CGV` at the :math:`n^{th}` iteration, the actual value of
+and :math:`\mathbf{\hat{d} - d^{obs} - d}^{n-1}`. If :math:`\beta^*` is the value of the trade-off parameter that minimizes eq. :eq:`GCV` at the :math:`n^{th}` iteration, the actual value of
 :math:`\beta` used to compute the new model is given by:
 
 .. math::
@@ -572,20 +597,21 @@ and :math:`\mathbf{\hat{d} - d^{obs} - d}^{n-1}`. If :math:`\beta^*` is the valu
 
 where the user-supplied factor :math:`bfac` is such that :math:`0.01<bfac<0.5`. As for Algorithm 2, this limit on the
 allowed decrease in the trade-off parameter prevents unnecessary structure being introduced into the model
-at early iterations. The inverse of the matrix :math:`\mathbf{M}` required in eq. :eq:`CGV`, and the solution to eq. :eq:`Systemdm` given this inverse, is
+at early iterations. The inverse of the matrix :math:`\mathbf{M}` required in eq. :eq:`GCV`, and the solution to eq. :eq:`Systemdm` given this inverse, is
 computed using the Cholesky factorization routines from LAPACK (Anderson et al., 1999). The line search at each iteration moves along the curve of the GCV function versus the logarithm of the trade-off parameter
 until the minimum is bracketed (or :math:`bfac \times \beta^{n-1}` reached), and then a golden section search (e.g., Press et al.,
 1986) is used to converge to the minimum. The starting value of :math:`\beta` in the line search is :math:`\beta^{n-1}` ( :math:`\beta^0` is estimated
 in the same way as for Algorithm 2). This is an efficient search, even with the inversion of the matrix :math:`\mathbf{M}`.
 
+.. _theory_inversion_lcurve:
 
 Algorithm 4: L-curve criterion
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-As for the GCV-based method described in Section 2.5.4 (**link**), the L-curve method provides a means of estimating
-an appropriate value of the trade-off parameter if only :math:`\hat{s}_i, \, i=1,...,N`, are known and not :math:`s_0`. For a linear
-inverse problem, if the misfit, :math:`\phi_d`, is plotted against the model norm, :math:`\phi_m`, for all reasonable values of the
-trade-off parameter, :math:`\beta`, the resulting curve tends to have a characteristic "L"-shape, especially when plotted
+As for the :ref:`GCV-based method <theory_inversion_gcv>`, the L-curve method provides a means of estimating
+an appropriate value of the trade-off parameter if only :math:`\hat{s}_i, \, i=1,...,N` are known and not :math:`s_0`. For a linear
+inverse problem, if the data misfit :math:`\phi_d` is plotted against the model norm :math:`\phi_m` for all reasonable values of the
+trade-off parameter :math:`\beta`, the resulting curve tends to have a characteristic "L"-shape, especially when plotted
 on logarithmic axes (see, for example, Hansen, 1998). The corner of this L-curve corresponds to roughly
 equal emphasis on the misfit and model norm during the inversion. Moving along the L-curve away from the
 corner is associated with a progressively smaller decrease in the misfit for large increases in the model norm,
@@ -594,7 +620,7 @@ point of maximum curvature on the L-curve is therefore the most appropriate, acc
 
 For a nonlinear problem, the L-curve criterion can be applied to the linearized inverse problem at each
 iteration (Li & Oldenburg, 1999; Farquharson & Oldenburg, 2000). In this situation, the L-curve is defined
-using the linearized misfit, which uses the approximation given in eq. (45) for the forward-modelled data.
+using the linearized misfit, which uses the approximation given in eq. :eq:`DataPerturb` for the forward-modelled data.
 The curvature of the L-curve is computed using the formula (Hansen, 1998):
 
 .. math::
@@ -602,16 +628,15 @@ The curvature of the L-curve is computed using the formula (Hansen, 1998):
     :name: zetaeq
 
 where :math:`\zeta = \textrm{log} \, \phi_d^{lin}` and :math:`\eta = \textrm{log}\, \phi_m`. The prime denotes differentiation with respect to log :math:`\beta`. As for both
-Algorithms 2 & 3, a restriction is imposed on how quickly the trade-off parameter can be decreased from one iteration to the next. The actual value of :math:`\beta` chosen for use at the
+Algorithms :ref:`2 <theory_inversion_disc>` & :ref:`3 <theory_inversion_gcv>`, a restriction is imposed on how quickly the trade-off parameter can be decreased from one iteration to the next. The actual value of :math:`\beta` chosen for use at the
 :math:`n^{th}` th iteration is given by eq. :eq:`betachoice`, where :math:`\beta^*` now corresponds to the value of :math:`\beta` at the point of maximum curvature on the L-curve.
 
 Experience has shown that the L-curve for the inverse problem considered here does not always have
 a sharp, distinct corner. The associated slow variation of the curvature with :math:`\beta` can make the numerical
 differentiation required to evaluate eq. :eq:`zetaeq` prone to numerical noise. The line search along the L-curve used
 in program EM1DFM to find the point of maximum curvature is therefore designed to be robust (rather
-than efficient). The L-curve is sampled at equally-spaced values of log :math:`\beta`, and long differences are used in the
-evaluation of eq. :eq:`zetaeq` to introduce some smoothing. A parabola is fit through the point from the equally-
-spaced sampling with the maximum value of curvature and its two nearest neighbours. The value of :math:`\beta` at the
+than efficient). The L-curve is sampled at equally-spaced values of :math:`\textrm{log} \, \beta`, and long differences are used in the
+evaluation of eq. :eq:`zetaeq` to introduce some smoothing. A parabola is fit through the point from the equally-spaced sampling with the maximum value of curvature and its two nearest neighbours. The value of :math:`\beta` at the
 maximum of this parabola is taken as :math:`\beta^*`. In addition, it is sometimes found that, for the range of values of
 :math:`\beta` that are tried, the maximum value of the curvature of the L-curve on logarithmic axes is negative. In this
 case, the curvature of the L-curve on linear axes is investigated to find a maximum. As for Algorithms 1 &
@@ -667,7 +692,7 @@ At subsequent iterations, the coefficient is reduced according to the formula:
 .. math::
     \gamma^n = \big ( 1 - \textrm{min}(\nu^{n-1}, 0.925) \big ) \gamma^{n-1}
 
-where :math:`\nu^{n-1}` is the step length used at the previous iteration. As mentioned at the end of Section 2.5.1 **link**, when
+where :math:`\nu^{n-1}` is the step length used at the previous iteration. As mentioned at the end of the :ref:`general forumlation <theory_inversion_gen>`, when
 positivity is being enforced, the step length at any particular iteration must satisfy eq. :eq:`cond1`.
 
 
