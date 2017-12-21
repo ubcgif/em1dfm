@@ -538,7 +538,7 @@ introduced into the model. In program EM1DFM, the target misfit at the :math:`n^
 
 .. math::
     \phi_d^{n, tar} = \textrm{max} \big ( mfac \times \phi_d^{n-1}, chifac \times N \big )
-    :name:
+    :name: mfac
 
 where the user-supplied factor :math:`mfac` is such that :math:`0.1 \leq mfac \leq 0.5`.
 
@@ -641,6 +641,8 @@ maximum of this parabola is taken as :math:`\beta^*`. In addition, it is sometim
 :math:`\beta` that are tried, the maximum value of the curvature of the L-curve on logarithmic axes is negative. In this
 case, the curvature of the L-curve on linear axes is investigated to find a maximum. As for Algorithms 1 &
 2, the least-squares solution to eq. :eq:`SystemdmLSQ` is used, and is computed using subroutine LSQR of Paige & Saunders (1982).
+
+.. _theory_alphas:
 
 Relative weighting within the model norm
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
