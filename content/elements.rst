@@ -16,6 +16,7 @@ Each of the above programs requires input files and the specification of paramet
     :maxdepth: 1
 
     files/input_em1dfm
-    files/input_em1dfmfwd
     files/supporting
+    files/input_em1dfmfwd
+    
 

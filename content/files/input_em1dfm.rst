@@ -3,6 +3,9 @@
 EM1DFM Main Input File
 ======================
 
+Line Descriptions
+-----------------
+
 The main input file for the em1dfm code sets up all aspects of the inversion algorithm. This includes setting: the observation file, the inversion algorithm type, what starting and reference models are used, and specifying inversion parameters. **This file must be given the name "em1dtm.in"**. The structure of the file **em1dfm.in** is described below. The supporting files (**link**) and their structures are provided on the following page.
 
 **NOTE:**
@@ -170,7 +173,7 @@ The main input file for the em1dfm code sets up all aspects of the inversion alg
 
 .. _invL8:
 
---**Line 8 - maxniters:** "maxniters" is the maximum number of iterations to be carried out in the inversion
+- **Line 8 - maxniters:** "maxniters" is the maximum number of iterations to be carried out in the inversion
 
 
 .. _invL9:
@@ -207,18 +210,32 @@ Number of explicit evaluations of Hankel transform kernels:
 outflg is the flag indicating the amount of output from the program. (WARNING: it is highly recommended that outflg = 3 or 4 is NOT specified if
 there are more than a few soundings to be inverted in a single run.)
 
-    - outflg = 1 implies the output of a brief convergence / termination report for each sounding plus the final two-dimensional composite model (cond &/or susc)
-    for all the soundings, and the corresponding forward-modelled data. If only one sounding is being considered the model(s) are output in one-dimensional
-    format.
+    - outflg = 1 implies the output of a brief convergence / termination report for each sounding plus the final two-dimensional composite model (cond &/or susc) for all the soundings, and the corresponding forward-modelled data. If only one sounding is being considered the model(s) are output in one-dimensional format.
     - outflg = 2 implies output as for outflg = 1 plus an iteration by iteration summary of the various components of the objective function.
-    - outflg = 3 implies output as for outflg = 2 plus the one-dimensional models and corresponding predicted data for each iteration for each sounding. The
-    diagnostics file is also produced.
-    - outflg = 4 implies output as for outflg = 3 plus any line-search information from misfit, GCV function or L-curve curvature versus trade-off paramenter.
-    Also produced is a diagnostics file for the LSQR solution routine if it is used.
+    - outflg = 3 implies output as for outflg = 2 plus the one-dimensional models and corresponding predicted data for each iteration for each sounding. The diagnostics file is also produced.
+    - outflg = 4 implies output as for outflg = 3 plus any line-search information from misfit, GCV function or L-curve curvature versus trade-off paramenter. Also produced is a diagnostics file for the LSQR solution routine if it is used.
+
+
+Examples
+--------
+
+**Example 1**
+
+.. figure:: images/input_inv_ex1.png
+     :align: center
+     :figwidth: 90% 
 
 
 
-em1dfmfwd
-^^^^^^^^^
+
+**Example 2**
+
+
+.. figure:: images/input_inv_ex2.png
+     :align: center
+     :figwidth: 90% 
+
+
+
 
 
