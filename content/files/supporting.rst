@@ -1,7 +1,7 @@
 .. _supportingFiles:
 
-Supporting Files
-================
+EM1DFM Supporting Files
+=======================
 
 .. _supportingFiles_obs:
 
@@ -140,6 +140,8 @@ This file contains the observations and all the survey parameters, with five lin
 |
 
 
+.. _supportingFiles_obs_ex:
+
 **Example for a single sounding**
 
 The observations file for a single sounding (that is, a single one-dimensional model) at x = 0 m, y = 0 m for an airborne-type configuration is shown below.
@@ -185,34 +187,141 @@ The observations file for EM31-type data for two soundings is shown below
 - The uncertainties are absolute in \%.
 
 
+.. _supportingFiles_mod:
+
+Files for reference and starting models
+---------------------------------------
+
+.. _supportingFiles_con:
+
+Conductivity files
+^^^^^^^^^^^^^^^^^^
+
+**Required if mtype = 1, 3 or 4 in the input file**
+
+This is the file containing the starting conductivity model for all soundings if conductivity is active in the inversion. The relevant quantities are the number of layers, and
+the thickness (m) and conductivity (S/m) of each layer. A dummy value for the thickness of the basement halfspace is required in this file, but nothing is ever done with it
+after it is read in. If conductivity is active in the inversion, it is from this file that the program gets the number of layers and their thicknesses, which then must be the same
+for all other models read in by the program. This file is therefore required for mode mtype = 1, 3 or 4 (i.e. conductivity is active in the inversion). This file can also be a layers-only file to indicate that the best-fitting halfspace is to be used as the starting model.
+
+The structure of this file is as follows (just as for all 1D model files). For a layers-only file the conductivity column is left blank:
+
+.. figure:: images/mod_con_struct.png
+    :align: center
+    :figwidth: 60%
+
+    File structure for conductivity models
+
+
+- **nlayers** is the number of layers in the model,
+- **thicks_a(j)** is the thickness in metres of the jth layer and
+- **con_a(j)** is the conductivity in S/m of the jth layer.
+
+An example file for a conductivity model made up of 12 layers (including the basement halfspace) is shown below. The thicknesses of the first eleven layers increase from 4.7987 m
+to 135.76 m. This model is a homogeneous halfspace of 0.3 milliSeimens per m.
+
+.. figure:: images/mod_con_ex.png
+    :align: center
+    :figwidth: 30% 
+
+    Conductivity file example
 
 
 
 
+.. _supportingFiles_sus:
+
+Susceptibility files
+^^^^^^^^^^^^^^^^^^^^
+
+**Required if mtype = 2 in the input file**
+
+This file contains the starting susceptibility model for all soundings if susceptibility is active in the inversion. The file contains the number of layers, and the thickness (m)
+and susceptibility (SI units) of each layer. A dummy value for the thickness of the basement halfspace is required, but nothing is done with it after it is read in.
+
+If only susceptibility is active (i.e., mtype = 2), the inversion program gets it's information about the number of layers in the model and their thicknesses from this file. If
+both conductivity and susceptibility are active (i.e., mtype = 3 or 4), the program gets the number of layers and their thicknesses from the starting conductivity model -
+see above. All other models (e.g., reference models) read in must then have the same number of layers with exactly the same thicknesses.
+
+The structure of this file is as follows (just as for all 1D model files). For a layers-only file the susceptibility column is left blank:
+
+.. figure:: images/mod_sus_struct.png
+    :align: center
+    :figwidth: 60%
+
+    File structure for susceptibility models
 
 
+- **nlayers** is the number of layers in the model,
+- **thicks_a(j)** is the thickness in metres of the jth layer and
+- **sus_a(j)** is the susceptibility in SI units of the jth layer.
+
+.. _supportingFiles_layer:
 
 
+Other inputs for starting and reference models
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**File for reference conductivity model (for smallest model component) (Optional)**
+
+The parameter describing the reference conductivity model for the **smallest** component of the model norm if one is required for the inversion, or describing the reference
+conductivity model if only susceptibility is active in the inversion. The parameter is either "NONE", **OR** a file OR a value for a halfspace **OR** "default" if the best-fitting
+halfspace is to be used. It is required if *mtype* = 1, 3 or 4 and *acs* > 0, or if *mtype* = 2. If a file is used, it must have the same format as the starting conductivity
+model file (see above), and it must have the same number of layers with exactly the same thicknesses as the starting conductivity and/or susceptibility model.
+
+**File for reference susceptibility model (for smallest model component) (Optional)**
+
+The parameter describing the reference susceptibility model for the **smallest** component of the model norm if one is required for the inversion, or describing the reference
+susceptibility model if only conductivity is active in the inversion. That is, this model is required if *mtype* = 2, 3 or 4 and *ass* > 0, or if *mtype* = 1. The parameter is
+either "NONE", **OR** a file OR a value for a halfspace **OR** "default" if the best-fitting halfspace is to be used. If a file is used, it must be in the same format as all model
+files (see above), and must have the same number of layers with exactly the same thicknesses as the starting conductivity and/or susceptibility model.
+
+**File for reference conductivity model (for flattest model component) (Optional - not available in the GUI)**
+
+The parameter describing the reference conductivity model for the **flattest** component of the model norm if one is required for the inversion. Whether or not this
+parameter is specified in "em1dfm.in" determines whether or not such a reference model plays a part in the inversion. The parameter is either "NONE", **OR** a file **OR** a
+value for a halfspace **OR** "default" if the best-fitting halfspace is to be used. If a file is used, it must be in the same format as the starting conductivity model file (see
+section above), and must have the same number of layers with exactly the same thicknesses as the starting conductivity and/or susceptibility model.
+
+**File for reference susceptibility model (for flattest model component) (Optional - not available in the GUI)**
+
+The parameter describing the reference susceptibility model for the **flattest** component of the model norm if one is required for the inversion. Whether or not this
+parameter is specified in "em1dfm.in" determines whether or not such a reference model plays a part in the inversion. The parameter is either "NONE", **OR** a file **OR** a
+value for a halfspace **OR** "default" if the best-fitting halfspace is to be used. If a file is used, it must be in the same format as the starting susceptibility model file (see
+section above), and must have the same number of layers with exactly the same thicknesses as the starting conductivity and/or susceptibility model.
 
 
+.. _supportingFiles_weight:
+
+File for additional model-norm weights
+--------------------------------------
+
+The file containing the information about the additional weighting of the layers for some or all of the four possible components of the model norm: smallest and flattest
+components for conductivity and susceptibility.
+
+    - The first line of this file must contain two (if *mtype* = 1 or 2) or four (if *mtype* = 3 or 4) integers (which can either have the value 0 or 1) to indicate that weights are being supplied for use in the two or four components of the model norm
+        - e.g., "1 0" for *mtype* = 1 implies that additional weights are supplied for use in the smallest component of the model norm but not the flattest component for only conductivity active in the inversion;
+        - "1 0" for *mtype* = 2 implies that additional weights are supplied for use in the smallest component of the model norm but not the flattest component for only susceptibility active in the inversion;
+        - "1 0 1 0" for *mtype* = 3 or 4 implies that additional weights are supplied for both the smallest component of the conductivity portion of the model norm and the smallest component of the susceptibility portion of the model norm, but not for the flattest components, when both conductivity and susceptibility are active in the inversion.
+    - The second line of this file must contain the number of layers in the model. The order of the four possibilities must be the same as shown below, with any set of weights that is not needed by the program simply omitted.
 
 
+.. figure:: images/weight_struct.png
+    :align: center
+    :figwidth: 60%
 
 
+The parameters within the this file are described as follows:
 
+    - *ics*, *icz*, *iss* \& *isz* are the four integers that indicate the presence of weights for the smallest and flattest components of the model norm for conductivity and the smallest and flattest components of the model norm for susceptibility (if *mtype* = 2,ics & icz are omitted),
+    - *nlayers* is the number of layers in the model;
+    - *uswcs_a(j)* is the weight for the jth layer in the smallest component of the conductivity portion of the model norm;
+    - *uswss_a(j)* is the weight for the jth layer in the smallest component of the susceptibility portion of the model norm;
+    - *uswcz_a(j)* is the weight for the difference between the jth and (j+1)th layers in the flattest component of the conductivity component of the model norm; and
+    - *uswsz_a(j)* is the weight for the difference between the jth and (j+1)th layers in the flattest component of the susceptibility component of the model norm.
 
-
-
-
-
-
-
-
-
-
-
-
-
+The supplied weights must be greater than zero. A weight greater than one increases the weight relative to the default setting, and a weight less than one decreases the
+weight relative to the default setting
 
 
 

@@ -17,6 +17,7 @@ Each of the above programs requires input files and the specification of paramet
 
     files/input_em1dfm
     files/supporting
+    files/output
     files/input_em1dfmfwd
     
 

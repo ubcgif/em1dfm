@@ -216,6 +216,8 @@ there are more than a few soundings to be inverted in a single run.)
     - outflg = 4 implies output as for outflg = 3 plus any line-search information from misfit, GCV function or L-curve curvature versus trade-off paramenter. Also produced is a diagnostics file for the LSQR solution routine if it is used.
 
 
+.. _inputEM1DFM_ex:
+
 Examples
 --------
 

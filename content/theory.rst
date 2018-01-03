@@ -491,7 +491,7 @@ Once the step :math:`\delta \mathbf{m}` has been determined by the solution of e
 
 .. math::
     \mathbf{m}^n = \mathbf{m}^{n-1} + \nu \delta \mathbf{m}
-    :name:
+    :name: mod_update
 
 There are two conditions on the step length :math:`\nu`. First, if positivity of the layer susceptibilities is being enforced:
 
@@ -708,7 +708,7 @@ To determine when an inversion algorithm has converged, the following criteria a
     \Phi^{n-1} - \Phi^n &< \tau (1 + \Phi^n )\\
     \| \mathbf{m}^{n-1} - \mathbf{m} \| &< \sqrt{\tau} (1 + \| \mathbf{m}^n \| )
     \end{split}
-    :name:
+    :name: conv_criteria
 
 where :math:`\tau` is a user-specified parameter. The algorithm is considered to have converged when both of the above
 equations are satisfied. The default value of :math:`\tau` is 0.01.
@@ -717,7 +717,7 @@ In case the algorithm happens directly upon the minimum, an additional condition
 
 .. math::
     \| \mathbf{g}^n \| \leq \epsilon
-    :name:
+    :name: conv_criteria2
 
 where :math:`\epsilon` is a small number close to zero, and where the gradient, :math:`\mathbf{g}^n`, at the :math:`n^{th}` iteration is given by:
 
