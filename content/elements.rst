@@ -6,11 +6,11 @@ Elements of the program
 
 The program library consists of the programs:
 
-#. **em1dfm**: performs the inversion.
+#. **em1dfm**: performs the inversion
 
-#. **em1dfmfwd**: performs forward modeling.
+#. **em1dfmfwd**: stand-alone forward modeling program
 
-Each of the above programs requires input files and the specification of parameters in order to run. However, some files are used by a number of programs. Before detailing the procedures for running each of the above programs, we first present information about these general files.
+Each of the above programs requires correctly formatted input files and a specified set of parameters in order to run. These are explained in the following sections:
 
 .. toctree::
     :maxdepth: 1
@@ -18,6 +18,9 @@ Each of the above programs requires input files and the specification of paramet
     files/input_em1dfm
     files/supporting
     files/output
-    files/input_em1dfmfwd
+    files/em1dfmfwd
     
+
+
+
 
