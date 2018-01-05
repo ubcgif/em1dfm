@@ -11,14 +11,12 @@ Here, we consider the forward modeling and inversion of DIGHEM-style data, colle
 
 .. figure:: images/fwd_mod.png
     :align: center
-    :figwidth: 50%
+    :figwidth: 40%
 
     True model
 
 
-A zip folder containing all input and output files from the forward modeling and inversion can be downloaded here (link).
-
-
+- `Download zip file for example 1 <https://github.com/ubcgif/em1dfm/raw/master/assets/example_1.zip>`__
 
 Example 2
 ---------
