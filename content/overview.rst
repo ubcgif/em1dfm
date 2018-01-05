@@ -1,63 +1,21 @@
 .. _overview:
 
-GRAV3D package overview
+EM1DFM package overview
 =======================
 
 Description
 -----------
 
-GRAV3D is a program library for carrying out forward modelling and inversion
-of surface and airborne gravity data over 3D structures. The program
-library carries out the following functions:
+EM1DFM is a Fortran-based, multi-platform program library for carrying out the one-dimensional inversion of frequency-domain, small loop, electromagnetic data acquired to determine the spatial variation of the electrical conductivity and/or magnetic susceptibility of the subsurface. The name "EM1DFM" derives from: electromagnetics ("EM"), one-dimensional models ("1D"), frequency-domain observations ("F"), and magnetic (dipole) sources and
+receivers ("M"). 
 
-#. Forward modelling of the vertical component of the gravity response
-   to a 3D volume of density contrast.
+The acquired data are measurements of the magnetic field associated with electric currents and magnetization induced in the subsurface by a time-varying current in a transmitter loop. Information about how the conductivity and susceptibility vary with depth is obtained by making measurements for different frequencies of the transmitter current, and for different separations, heights and orientations of the transmitters and receivers. Making such measurements at different locations gives information about the lateral variation in the subsurface.
 
-#. The model is specified in the mesh of rectangular cells, each with a
-   constant value of density contrast. Topography is included in the
-   mesh. The vertical gravity response can be calculated anywhere within
-   the model volume, including above the topography to simulate ground
-   or airborne surveys. There is also a capability to simulate and
-   invert data collected beneath the surface (e.g. borehole surveys) and
-   combinations of ground and borehole surveys.
+The mathematical representation that EM1DFM uses to model the Earth varies only with depth. In particular, the representation comprises many uniform, horizontal layers, and it is the conductivity and/or susceptibility within each layer that is computed. Four options are available: just the conductivity in each layer can be constructed, or just the susceptibility (constrained to be positive) in each layer, or both the conductivity and susceptibility with the positivity constraint on the susceptibility, or both the conductivity and susceptibility without the positivity constraint.
 
-   -  The inversion is solved as an optimization problem with the
-      simultaneous goals of (i) minimizing a model objective function
-      and (ii) generating synthetic data that match observations to
-      within a degree of misfit consistent with the statistics of those
-      data.
+The initial research underlying this program library was funded principally by the “IMAGE” consortium, of which the following companies were participants: AGIP, Anglo American, Billiton, Cominco, Falconbridge, INCO, MIM, Muskox Minerals, Newmont, Placer Dome and Rio Tinto, and from the Natural Sciences and Engineering Research Council of Canada (NSERC).
 
-   -  To counteract the inherent lack of information about the distance
-      between source and measurement, the formulation incorporates depth
-      or distance weighting.
-
-   -  By minimizing the model objective function, distributions of
-      subsurface susceptibility contrast are found that are both close
-      to a reference model and smooth in three dimensions. The degree to
-      which either of these two goals dominates is controlled by the
-      user by incorporating a priori geophysical or geological
-      information into the inversion. Explicit prior information may
-      also take the form of upper and lower bounds on the susceptibility
-      contrast in any cell.
-
-   -  The regularization parameter (controlling relative importance of
-      objective function and misfit terms) is determined in either of
-      three ways, depending upon how much is known about errors in the
-      measured data.
-
-   -  Implementation of parallel computing architecture (OpenMP) allows
-      the user to take full advantage of multi-core processors on a CPU.
-      A cluster-based code using Message Passing Interface (MPI) is also
-      available. Notes on computation speed are found at the end of this
-      section.
-
-#. The large size of 3D inversion problems is mitigated by the use of
-   wavelet compression. Parameters controlling the implementation of
-   this compression are available for advanced users.
-
-The initial research underlying this program library was funded principally by the mineral industry consortium "Joint and Cooperative Inversion of Geophysical and Geological Data" (1991 - 1997) which was sponsored by NSERC and the following 11 companies: BHP Minerals, CRA Exploration, Cominco Exploration, Falconbridge, Hudson Bay Exploration and Development, INCO Exploration & Technical Services, Kennecott Exploration Company, Newmont Gold Company, Noranda Exploration, Placer Dome, and WMC.
-
-The current improvements have been funded by the consortium "Potential fields and software for advanced inversion" (2012-2016) sponsored by Newmont, Teck, Glencore, BHP Billiton, Vale, Computational Geoscience Inc, Cameco, Barrick, Rio Tinto, and Anglo American.
+**ANY ADDITIONAL STUFF REQUIRED**
 
 Program library content
 -----------------------
@@ -65,13 +23,10 @@ Program library content
 Executable programs
 ^^^^^^^^^^^^^^^^^^^
 
-This package consists of five major programs:
+This package consists of two programs:
 
-   - PFWEIGHT: calculates the depth/distance weighting function
-   - GZFOR3D: performs forward modelling
-   - GZSEN3D: calculates the sensitivity matrix
-   - GZPRE3D: multiplies the sensitivity file by the model to get the predicted data
-   - GZINV3D: performs 3D gravity inversion
+   - EM1DFM: carries out the inversion of small loop, frequency-domain EM data assuming a layered Earth model
+   - EM1DFMFWD: a stand-alone program for forward modeling the frequency-domain response assuming a layered Earth model
 
 Graphical user interfaces
 ^^^^^^^^^^^^^^^^^^^^^^^^^

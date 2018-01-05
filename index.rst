@@ -16,7 +16,7 @@ EM1DFM is a program library for carrying out forward modeling and inversion of f
     Background theory <content/theory>
     Elements <content/elements>    
     Running the programs <content/runPrograms>
-    Examples <content/examples>    
+    Examples <content/examples/examples>    
     References <references>
     
 
