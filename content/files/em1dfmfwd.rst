@@ -6,7 +6,7 @@ EM1DFMFWD Program
 Input file
 ----------
 
-The main input file for the em1dfmfwd code sets up all aspects of the forward modeling. This includes setting: the observation file and the physical property model(s). **This file must be given the name "em1dtmfwd.in"**. The structure of the file **em1dfmfwd.in** is described below. The supporting files (**link**) and their structures were provided earlier.
+The main input file for the em1dfmfwd code sets up all aspects of the forward modeling. This includes setting: the observation file and the physical property model(s). Unlike for the inversion code, the main input file for the EM1DFMFWD does not require a specified name. The structure of the main input file is described below. The supporting files and their structures were provided earlier.
 
 .. figure:: images/input_fwd_ex.png
      :align: center

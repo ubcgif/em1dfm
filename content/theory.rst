@@ -10,6 +10,13 @@ The EM1DFM and EM1DFMFWD programs are designed to interpret frequency-domain, sm
 These programs model the Earth's frequency-domain electromagnetic response due to a small inductive loop source which carries a sinusoidal time-varying current. 
 The data are the secondary magnetic field which results from currents and magnetization induced in the Earth.
 
+
+.. figure:: ../images/domain.png
+    :align: center
+    :figwidth: 70%
+
+
+
 .. _theory_source:
 
 Details regarding the source and receiver
@@ -45,8 +52,6 @@ This also ensures that conductivities in the constructed model are positive. It 
 invert for the logarithms of the layer susceptibilities. Near-zero values of susceptibility would become overly
 important and large values would be overestimated (Zhang & Oldenburg, 1997). Therefore susceptibilities
 are found directly by the inversion, with the option of imposing a positivity constraint.
-
-**Add picture of model**
 
 
 .. _theory_data:
@@ -137,7 +142,7 @@ where :math:`t_{j-1} = z_j - z_{j-1}` is the thickness of layer :math:`j-1`. Thr
 
 .. math::
     \begin{bmatrix} D_{j-1} \\ U_{j-1} \end{bmatrix} =
-    e^{u_{j-1}t{j-1}} \mathbf{M_j} \begin{bmatrix} D_{j} \\ U_{j} \end{bmatrix},
+    e^{u_{j-1}t_{j-1}} \mathbf{M_j} \begin{bmatrix} D_{j} \\ U_{j} \end{bmatrix},
     :name:
 
 where
@@ -171,7 +176,7 @@ Using eqs. :eq:`Layer_soln` and :eq:`Layer_soln_0`, we can relate the coefficien
 the solution in the basement halfspace:
 
 .. math::
-    \begin{bmatrix} D_0 \\ U_0 \end{bmatrix} = \mathbf{M_1} exp \Bigg ( \sum_{j=1}^M u_{j-1} t_{j-1} \Bigg ) \prod_{j=1}^M \mathbf{M_j} \begin{bmatrix} D_M \\ U_M \end{bmatrix}
+    \begin{bmatrix} D_0 \\ U_0 \end{bmatrix} = \mathbf{M_1} exp \Bigg ( \sum_{j=2}^M u_{j-1} t_{j-1} \Bigg ) \prod_{j=2}^M \mathbf{M_j} \begin{bmatrix} D_M \\ U_M \end{bmatrix}
     :name: Matrix_soln
 
 There is no upward-decaying part of the solution in the basement halfspace (thus :math:`U_M = 0`). In the air, the
@@ -190,7 +195,7 @@ where the matrix :math:`\mathbf{P}` is given by
 and the factor :math:`E` is given by:
 
 .. math::
-    E = exp \Bigg ( \sum_{j=1}^M u_{j-1} t_{j-1} \Bigg )
+    E = exp \Bigg ( \sum_{j=2}^M u_{j-1} t_{j-1} \Bigg )
     :name:
 
 From eq. :eq:`Matrix_soln2`, we see that:
@@ -215,7 +220,7 @@ which does not involve any exponential terms whose arguments have positive real 
 The solution for :math:`\tilde{F}` in the air halfspace is therefore given by:
 
 .. math::
-    \tilde{F}_0 = D_0^s \Big ( e^{-u_0 z} + \frac{P_{21}}{P_{11}} e^{u_0 z} \Big )
+    \tilde{F}_0 = D_0^s \Bigg ( e^{-u_0 z} + \frac{P_{21}}{P_{11}} e^{u_0 z} \Bigg )
     :name: Final_soln
 
 For a unit vertical magnetic dipole source at a height :math:`h` (i.e. :math:`z = -h` for :math:`h>0`) above the surface of the Earth:

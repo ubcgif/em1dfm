@@ -10,11 +10,12 @@ Observation File
 
 This file contains the observations and all the survey parameters, with five lines including parameters as follows:
 
-    1. the number of soundings;
-    2. the x- and y-coordinates of each sounding, and the number of frequencies per sounding;
-    3. each frequency, and the number of transmitters for each frequency;
-    4. the dipole moment of each transmitter, their z-coordinates and orientations, and the number of receivers for each;
-    5. the last line contains all of
+    1. the number of soundings
+    2. the x- and y-coordinates of each sounding, and the number of frequencies per sounding
+    3. each frequency, and the number of transmitters for each frequency
+    4. the dipole moment of each transmitter, their z-coordinates and orientations, and the number of receivers for each
+    5. the last line contains all of:
+
         - the dipole moment of each receiver,
         - the transmitter-receiver separation in the x- and y-directions,
         - the z-coordinate and orientation of each receiver,
@@ -36,7 +37,7 @@ This file contains the observations and all the survey parameters, with five lin
 
 .. _obsA:
 
-- :math:`\mathbf{nsounds}` is the number of soundings
+- :math:`\mathbf{nsounds}` is the number of soundings. Each sounding refers to an independent horizontal location where the Earth may be considered as a layered model. Thus, the EM1DFM code inverts for an independent layered Earth model for each sounding. This is used to infer horizontal variability in the Earth's conductivity and/or susceptibility structure.
 
 .. _obsB:
 
