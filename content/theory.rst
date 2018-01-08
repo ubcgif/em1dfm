@@ -50,7 +50,7 @@ The electrical conductivity of Earth materials varies over several orders of mag
 natural to invert for the logarithms of the layer conductivities rather than the conductivities themselves.
 This also ensures that conductivities in the constructed model are positive. It is not appropriate, however, to
 invert for the logarithms of the layer susceptibilities. Near-zero values of susceptibility would become overly
-important and large values would be overestimated (Zhang & Oldenburg, 1997). Therefore susceptibilities
+important and large values would be overestimated (:cite:`Zhang1997`). Therefore susceptibilities
 are found directly by the inversion, with the option of imposing a positivity constraint.
 
 
@@ -80,8 +80,8 @@ Forward Modeling
 ----------------
 
 The method used to compute the magnetic field values for a particular source-receiver arrangement over a
-layered Earth model is the matrix propagation approach described in Farquharson et al. (2000). The method
-uses the z-component of the Schelkunoff F-potential (Ward & Hohmann, 1987):
+layered Earth model is the matrix propagation approach described in Farquharson (:cite:`Farquharson2003`). The method
+uses the z-component of the Schelkunoff F-potential (:cite:`Ward1987`):
 
 .. math::
     \begin{align}
@@ -229,13 +229,13 @@ For a unit vertical magnetic dipole source at a height :math:`h` (i.e. :math:`z 
     D_0^s = \frac{i\omega \mu_0}{2 u_0}e^{-u_0 h}
     :name: Source_vert
 
-(Ward & Hohmann, 1987, eq. 4.40), and for a unit x-directed magnetic dipole source at :math:`z=-h`:
+(:cite:`Ward1987`, eq. 4.40), and for a unit x-directed magnetic dipole source at :math:`z=-h`:
 
 .. math::
     D_0^s = - \frac{i\omega \mu_0}{2} \frac{ik_x}{k_x^2 + k_y^2} e^{-u_0 h}
     :name: Source_horiz
 
-(Ward & Hohmann, 1987, eq. 4.106). Once whichever of these terms is appropriate is substituted into
+(:cite:`Ward1987`, eq. 4.106). Once whichever of these terms is appropriate is substituted into
 eq. :eq:`Final_soln`, the solution is completed by converting the required inverse two-dimensional Fourier transform to
 a Hankel transform, and using eq. :eq:`Schelkunoff` to obtain the three components of the H-field above the Earth model (:math:`z<0`).
 For a z-directed magnetic dipole source at (:math:`0,0,-h`) such that :math:`h>0`:
@@ -262,11 +262,10 @@ And for a x-directed magnetic dipole source at (:math:`0,0,-h`) such that :math:
 
 
 The Hankel transforms in eqs. :eq:`Soln_zdip` and :eq:`Soln_xdip` are computed using the digital filtering routine of Anderson
-(1982). The kernels of these equations are pre-computed at a certain number of logarithmically-spaced values of :math:`\lambda`.
+(:cite:`Anderson1982`). The kernels of these equations are pre-computed at a certain number of logarithmically-spaced values of :math:`\lambda`.
 Anderson’s routine then extracts the values of the kernels at the values of :math:`\lambda` it requires by cubic
 spline interpolation. The number of values of :math:`\lambda` at which the kernels are pre-computed (50 minimum) can
-be specified in the input file “em1dfm.in”; see “line 11” in the input file description (Section 3.1.1 of the
-Manual) **link**.
+be specified in the input file “em1dfm.in”; see “line 11” in the :ref:`input file<inputEM1DFM>` description.
 
 There are three places where previously-computed components of eqs. :eq:`Soln_zdip` and :eq:`Soln_xdip` can be re-used. The
 propagation of the matrices through the layers depends on frequency, and must be re-done for each different
@@ -275,7 +274,7 @@ location and orientation of the transmitter and receiver, and so can be re-used 
 receivers for the same frequency. Furthermore, if there are multiple transmitter-receiver pairs with the same
 height (and the same frequency), there is no difference in the kernels of their Hankel transforms, and so the
 values of the kernels computed for one pair can be re-used for all the others. It is to ensure this grouping of
-the survey parameters that the observations file is structured the way it is (see Section 3.1.2 of the Manual) **link**.
+the survey parameters that the observations file is structured the way it is (see the :ref:`observation file<supportingFiles_obs>`).
 
 The individual propagation matrices :math:`\mathbf{M_j}`, and each matrix computed in the construction of the propagation matrix :math:`\mathbf{P}`, are saved in the forward-modelling routine. These are then re-used in the computation of the sensitivities.
 
@@ -299,7 +298,7 @@ matrix for the sensitivities, :math:`\mathbf{J} = (\mathbf{J^\sigma}, \mathbf{J^
 in which :math:`d_i` is the :math:`i^{th}` observation, and :math:`\sigma_j` and :math:`\kappa_j` are the conductivity and susceptibility of the :math:`j^{th}` layer.
 
 The algorithm for computing the sensitivities is obtained by differentiating the expressions for the H-fields (see :eq:`Soln_zdip` and :eq:`Soln_xdip`)
-with respect to the model parameters (Farquharson et al., 2000). For example, the
+with respect to the model parameters (:cite:`Farquharson2003`). For example, the
 sensitivity with respect to :math:`m_j` (either the conductivity or susceptibility of the :math:`j^{th}` layer) of the
 z-component of the H-field for a z-directed magnetic dipole source is given by differentiating the third expression in :eq:`Soln_zdip`:
 
@@ -329,7 +328,7 @@ The derivatives of the individual layer matrices with respect to the conductivit
 straightforward to derive, and are not given here.
 
 Just as for the forward modelling, the Hankel transform in eq. :eq:`Sensitivity_z`, and those in the corresponding
-expressions for the sensitivities of the other observations, are computed using the digital filtering routine of Anderson (1982).
+expressions for the sensitivities of the other observations, are computed using the digital filtering routine of Anderson (:cite:`Anderson1982`).
 
 The partial propagation matrices
 
@@ -412,13 +411,13 @@ where :math:`t_j` is the thickness of the :math:`j^{th}` layer. And the matricie
     & & & & & 0 \end{bmatrix}
     :name:
 
-The rows of any of these four weighting matrices can be scaled if desired (see Section 3.1.9 of the manual**link**). The
+The rows of any of these four weighting matrices can be scaled if desired (see file for :ref:`additional model-norm weights<supportingFiles_weight>`). The
 vectors :math:`\mathbf{m_s^{\sigma , ref}}`, :math:`\mathbf{m_z^{\sigma , ref}}`, :math:`\mathbf{m_s^{\kappa , ref}}` and :math:`\mathbf{m_z^{\kappa , ref}}`
 contain the layer conductivities/susceptibilities for the four possible reference models. The four terms in
 :math:`\phi_m` therefore correspond to the “smallest” and “flattest” terms for the
 conductivity and susceptibility parts of the model. The relative importance of the four terms is governed by
 the coefficients :math:`\mathbf{\alpha_s^{\sigma}}`, :math:`\mathbf{\alpha_z^{\sigma}}`, :math:`\mathbf{\alpha_s^{\kappa}}` and :math:`\mathbf{\alpha_z^{\kappa}}`
-, which are discussed in Section 2.5.6 **link**. :math:`\beta` is the trade-off parameter that
+, which are discussed in the :ref:`general formulation of the inversion problem<theory_inversion_gen>`. :math:`\beta` is the trade-off parameter that
 balances the opposing effects of minimizing the misfit and minimizing the amount of structure in the model.
 It is the different ways in which :math:`\beta` is determined that distinguish the four inversion algorithms in program
 EM1DFM from one another. They are described in the next sections.
@@ -430,7 +429,7 @@ Finally, the third component of the objective function is a logarithmic barrier 
     :name: barrier_cond
 
 where :math:`c` is a constant, usually equal to 1. This term is how the positivity constraint on the layer susceptibilities
-is enforced. It, and its coefficient :math:`\gamma`, are described in Section 2.5.7 (**link**.
+is enforced. It, and its coefficient :math:`\gamma`, are described :ref:`here<theory_pos_sus>`.
 
 As mentioned in the :ref:`computing sensitivities <theory_sensitivities>` section, the inverse problem considered here is nonlinear. It is solved using an
 iterative procedure. At the :math:`n^{th}` iteration, the actual objective function being minimized is:
@@ -522,7 +521,7 @@ Algorithm 1: fixed trade-off parameter
 
 The trade-off parameter, :math:`\beta`, remains fixed at its user-supplied value throughout the inversion. The least-
 squares solution of eq. :eq:`SystemdmLSQ` is used. This is computed using the subroutine “LSQR” of Paige & Saunders
-(1982). If the desired value of :math:`\beta` is known, this is the fastest of the four inversion algorithms as it does not
+(:cite:`Paige1982`). If the desired value of :math:`\beta` is known, this is the fastest of the four inversion algorithms as it does not
 involve a line search over trial values of :math:`\beta` at each iteration. If the appropriate value of :math:`\beta` is not known, it
 can be found using this algorithm by trail-and-error. This may or may not be time-consuming.
 
@@ -548,7 +547,7 @@ introduced into the model. In program EM1DFM, the target misfit at the :math:`n^
 where the user-supplied factor :math:`mfac` is such that :math:`0.1 \leq mfac \leq 0.5`.
 
 The step :math:`\delta \mathbf{m}` is found from the solution of eq. :eq:`SystemdmLSQ` using subroutine
-LSQR of Paige & Saunders (1982). The line search at each iteration moves along the :math:`\phi_d` versus log :math:`\! \beta` curve until either the target misfit, :math:`\phi_d^{n, tar}`,
+LSQR of Paige & Saunders (:cite:`Paige1982`). The line search at each iteration moves along the :math:`\phi_d` versus log :math:`\! \beta` curve until either the target misfit, :math:`\phi_d^{n, tar}`,
 is bracketed, in which case a bisection search is used to converge to the target, or the minimum misfit
 (:math:`> \phi_d^{n-1}`) is bracketed, in which case a golden section search (for example, Press et al., 1986) is used to
 converge to the minimum. The starting value of :math:`\beta` for each line search is :math:`\beta^{n-1}`. For the first iteration, the :math:`\beta \, (=\beta_0)` for the line search is given by
@@ -566,19 +565,17 @@ If only the relative amount of noise in the observations is known - that is, :ma
 the appropriate target value for the misfit cannot be determined, and hence Algorithm 2 is not the most
 suitable. The generalized cross-validation (GCV) method provides a means of estimating, during the course
 of an inversion, a value of the trade-off parameter that results in an appropriate fit to the observations, and
-in so doing, effectively estimating the level of noise, :math:`s_0`, in the observations (see, for example, Wahba, 1990;
-Hansen, 1998).
+in so doing, effectively estimating the level of noise, :math:`s_0`, in the observations (see, for example, :cite:`Wahba1990`;
+:cite:`Hansen1998`).
 
-The GCV method is based on the following argument (Wahba, 1990; Haber, 1997; Haber & Oldenburg,
-2000). Consider inverting all but the first observation using a trial value of :math:`\beta`, and then computing the
+The GCV method is based on the following argument (:cite:`Wahba1990`; :cite:`Haber1997`; :cite:`Haber2000`). Consider inverting all but the first observation using a trial value of :math:`\beta`, and then computing the
 individual misfit between the first observation and the first forward-modelled datum for the model produced
 by the inversion. This can be repeated leaving out all the other observations in turn, inverting the retained
 observations using the same value of :math:`\beta`, and computing the misfit between the observation left out and the
 corresponding forward-modelled datum. The best value of :math:`\beta` can then be defined as the one which gives the
 smallest sum of all the individual misfits. For a linear problem, this corresponds to minimizing the GCV
 function. For a nonlinear problem, the GCV method can be applied to the linearized problem being solved
-at each iteration (Haber, 1997; Haber & Oldenburg, 2000; Li & Oldenburg, 2000; Farquharson & Oldenburg,
-2000). From eq. :eq:`Systemdm`, the GCV function for the :math:`n^{th}` iteration is given by:
+at each iteration (:cite:`Haber1997`; :cite:`Haber2000`; :cite:`Li2003`; :cite:`Farquharson2000`). From eq. :eq:`Systemdm`, the GCV function for the :math:`n^{th}` iteration is given by:
 
 .. math::
     GCV (\beta ) = \dfrac{\big \| \mathbf{W_d \hat{d} - W_d J}^{n-1} \mathbf{M}^{-1} \big ( \mathbf{J}^{n-1 \, T} \mathbf{W_d}T \mathbf{W_d \hat{d} + r} \big ) \big \|^2 }{\big [ \textrm{trace} \big ( \mathbf{I - W_d J}^{n-1} \mathbf{M}^{-1} \mathbf{J}^{n-1 \, T} \mathbf{W_d}^T \big )  \big ]^2}
@@ -603,7 +600,7 @@ and :math:`\mathbf{\hat{d} - d^{obs} - d}^{n-1}`. If :math:`\beta^*` is the valu
 where the user-supplied factor :math:`bfac` is such that :math:`0.01<bfac<0.5`. As for Algorithm 2, this limit on the
 allowed decrease in the trade-off parameter prevents unnecessary structure being introduced into the model
 at early iterations. The inverse of the matrix :math:`\mathbf{M}` required in eq. :eq:`GCV`, and the solution to eq. :eq:`Systemdm` given this inverse, is
-computed using the Cholesky factorization routines from LAPACK (Anderson et al., 1999). The line search at each iteration moves along the curve of the GCV function versus the logarithm of the trade-off parameter
+computed using the Cholesky factorization routines from LAPACK (:cite:`Anderson1999`). The line search at each iteration moves along the curve of the GCV function versus the logarithm of the trade-off parameter
 until the minimum is bracketed (or :math:`bfac \times \beta^{n-1}` reached), and then a golden section search (e.g., Press et al.,
 1986) is used to converge to the minimum. The starting value of :math:`\beta` in the line search is :math:`\beta^{n-1}` ( :math:`\beta^0` is estimated
 in the same way as for Algorithm 2). This is an efficient search, even with the inversion of the matrix :math:`\mathbf{M}`.
@@ -617,7 +614,7 @@ As for the :ref:`GCV-based method <theory_inversion_gcv>`, the L-curve method pr
 an appropriate value of the trade-off parameter if only :math:`\hat{s}_i, \, i=1,...,N` are known and not :math:`s_0`. For a linear
 inverse problem, if the data misfit :math:`\phi_d` is plotted against the model norm :math:`\phi_m` for all reasonable values of the
 trade-off parameter :math:`\beta`, the resulting curve tends to have a characteristic "L"-shape, especially when plotted
-on logarithmic axes (see, for example, Hansen, 1998). The corner of this L-curve corresponds to roughly
+on logarithmic axes (see, for example, :cite:`Hansen1998`). The corner of this L-curve corresponds to roughly
 equal emphasis on the misfit and model norm during the inversion. Moving along the L-curve away from the
 corner is associated with a progressively smaller decrease in the misfit for large increases in the model norm,
 or a progressively smaller decrease in the model norm for large increases in the misfit. The value of :math:`\beta` at the
@@ -645,7 +642,7 @@ evaluation of eq. :eq:`zetaeq` to introduce some smoothing. A parabola is fit th
 maximum of this parabola is taken as :math:`\beta^*`. In addition, it is sometimes found that, for the range of values of
 :math:`\beta` that are tried, the maximum value of the curvature of the L-curve on logarithmic axes is negative. In this
 case, the curvature of the L-curve on linear axes is investigated to find a maximum. As for Algorithms 1 &
-2, the least-squares solution to eq. :eq:`SystemdmLSQ` is used, and is computed using subroutine LSQR of Paige & Saunders (1982).
+2, the least-squares solution to eq. :eq:`SystemdmLSQ` is used, and is computed using subroutine LSQR of Paige & Saunders (:cite:`Paige1982`).
 
 .. _theory_alphas:
 
@@ -661,7 +658,7 @@ If both conductivity and susceptibility are active in the inversion, the relativ
 :math:`\alpha_s^\sigma` & :math:`\alpha_z^\sigma` to :math:`\alpha_s^\kappa` & :math:`\alpha_z^\kappa`
 is also required. Program EM1DFM includes a simple means of calculating a default value for this
 relative balance. Using the layer thicknesses, weighting matrices :math:`\mathbf{W_s^\sigma}`, :math:`\mathbf{W_z^\sigma}`, :math:`\mathbf{W_s^\kappa}` & :math:`\mathbf{W_z^\kappa}`, and user-supplied
-weighting of the smallest and flattest parts of the conductivity and susceptibility components of the model norm (see acs, acz, ass & asz in the input file description, line 5, Section 3.1.1 **link**), the following two quantities
+weighting of the smallest and flattest parts of the conductivity and susceptibility components of the model norm (see acs, acz, ass & asz in the :ref:`input file description<inputEM1DFM>`, line 5), the following two quantities
 are computed for a test model :math:`\mathbf{m}^*`:
 
 .. math::
@@ -680,13 +677,14 @@ balance usually requires modification by the user to obtain the best susceptibil
 model tends to be insensitive to this balance.) If anything, the default balance will suppress the constructed
 susceptibility model.
 
+.. _theory_pos_sus:
 
 Positive susceptibility
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 ProgramEM1DFM can perform an unconstrained inversion for susceptibilities (along with the conductivities)
 as well as invert for values of susceptibility that are constrained to be positive. Following Li & Oldenburg
-(2000), the positivity constraint is implemented by incorporating a logarithmic barrier term in the objective
+(:cite:`Li2003`), the positivity constraint is implemented by incorporating a logarithmic barrier term in the objective
 function (see eqs. :eq:`ObjectiveFun` & :eq:`barrier_cond`). For the initial iteration, the coefficient of the logarithmic barrier term is chosen
 so that this term is of equal important to the rest of the objective function:
 
@@ -699,14 +697,14 @@ At subsequent iterations, the coefficient is reduced according to the formula:
 .. math::
     \gamma^n = \big ( 1 - \textrm{min}(\nu^{n-1}, 0.925) \big ) \gamma^{n-1}
 
-where :math:`\nu^{n-1}` is the step length used at the previous iteration. As mentioned at the end of the :ref:`general forumlation <theory_inversion_gen>`, when
+where :math:`\nu^{n-1}` is the step length used at the previous iteration. As mentioned at the end of the :ref:`general formulation <theory_inversion_gen>`, when
 positivity is being enforced, the step length at any particular iteration must satisfy eq. :eq:`cond1`.
 
 
 Convergence criteria
 ^^^^^^^^^^^^^^^^^^^^
 
-To determine when an inversion algorithm has converged, the following criteria are used (Gill et al., 1981):
+To determine when an inversion algorithm has converged, the following criteria are used (:cite:`Gill1981`):
 
 .. math::
     \begin{split}

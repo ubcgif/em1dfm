@@ -3,7 +3,7 @@
 References
 ==========
 
- .. bibliography:: reference.bib
+.. bibliography:: references.bib
     :cited:
     :style: alpha
     :encoding: latex+latin
