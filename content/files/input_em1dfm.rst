@@ -6,11 +6,11 @@ EM1DFM Main Input File
 Line Descriptions
 -----------------
 
-The main input file for the em1dfm code sets up all aspects of the inversion algorithm. This includes setting: the observation file, the inversion algorithm type, what starting and reference models are used, and specifying inversion parameters. **This file must be given the name "em1dtm.in"**. The structure of the file **em1dfm.in** is described below. The supporting files (**link**) and their structures are provided on the following page.
+The main input file for the em1dfm code sets up all aspects of the inversion algorithm. This includes setting: the observation file, the inversion algorithm type, what starting and reference models are used, and specifying inversion parameters. **This file must be given the name "em1dtm.in"**. The structure of the file **em1dfm.in** is described below. The :ref:`supporting files<supportingFiles>` and their structures are provided on the following page.
 
 **NOTE:**
-    - some lines may be omitted depending on the inversion type chosen
-    - for all file names and their paths, please avoid spaces as Fortran 90 cannot handle spaces (so do not put files in C:\Program Files on a Windows machine)
+    - some lines may be omitted depending on the inversion type chosen (which mean the number of lines may change!!!)
+    - for all file names and their paths, please avoid spaces as Fortran 90 cannot handle spaces (so **do not** put files in C:\Program Files on a Windows machine)
     - Apart from the root name (which must be a maximum of 20 characters with no spaces), all files specified within the input file must not contain spaces and be no longer than 99 characters
 
 
@@ -64,12 +64,12 @@ The main input file for the em1dfm code sets up all aspects of the inversion alg
 
 .. _invL2:
 
-- **Line 2 - obsfname:** "obsfname" is the name of the file containing the field observations. An example of the formatting of the observation file can be found here **link** (see section 3.1.2).
+- **Line 2 - obsfname:** "obsfname" is the name of the file containing the field observations. An example of the formatting of the observation file can be found :ref:`here<supportingFiles_obs>`.
 
 
 .. _invL3:
 
-- **Line 3 - mtype:** "mtype" indicates the type of model being recovered in the inversion. It is specified using flag values of 1, 2, 3 or 4. The choice made here affects what is required for the remaining lines in the input file; especially the starting and reference models required. Please check all parameter lines very carefully. The types of model which can be recovered from the inversion are:
+- **Line 3 - mtype:** "mtype" indicates the type of model being recovered in the inversion. It is specified using flag values of 1, 2, 3 or 4. The choice made here affects what is required for the remaining lines in the input file; especially the starting and reference models required. It also impacts the total number of lines contained in the input file. Please check all parameter lines very carefully. The types of model which can be recovered from the inversion are:
 
     - mtype = 1 implies just conductivity is active in the inversion
     - mtype = 2 implies just susceptibility (with positivity constrained by means of a logarithmic barrier term) is active in the inversion
@@ -82,16 +82,16 @@ The main input file for the em1dfm code sets up all aspects of the inversion alg
 
     - Required if mtype = 1, 3 or 4
     - Omitted if mtype = 2
-    - Formatting for strconfname files **link**
+    - :ref:`Formatting for strconfname files<supportingFiles_con>`
 
 .. _invL3b:
 
 - **Line 3b - stsusfname:** "stsusfname" sets the starting susceptibility model for the inversion. If active in the inversion, several inputs types can be used to specify the starting susceptibility model.
 
     - Omitted if mtype = 1.
-    - For mtype=2, provide the name of a model file **link** **or** a layers-only file (in which case the best-fitting halfspace is used as the starting model).
-    - For mtype=3 or 4, provide the name of a model file **link**, **or** a numerical value for the halfspace susceptibility (since layer thicknesses are known from the conductivity file), **or** "DEFAULT" if the best-fitting halfspace is to be used as the starting model.
-    - Formatting for stsusfname files **link**
+    - For mtype=2, provide the name of a :ref:`model file<supportingFiles_mod>` **or** a layers-only file (in which case the best-fitting halfspace is used as the starting model).
+    - For mtype=3 or 4, provide the name of a :ref:`model file<supportingFiles_mod>`, **or** a numerical value for the halfspace susceptibility (since layer thicknesses are known from the conductivity file), **or** "DEFAULT" if the best-fitting halfspace is to be used as the starting model.
+    - :ref:`Formatting for stsusfname files<supportingFiles_sus>`
 
 .. _invL3c:
 
@@ -99,8 +99,8 @@ The main input file for the em1dfm code sets up all aspects of the inversion alg
 
     - Required if mtype = 2, or if mtype = 1, 3 or 4 with :math:`acs>0`
     - Enter "NONE" if not required
-    - rsconfname can be entered as the name of a **model file** (**link**), **or** as a specified value for a halfspace **or** as "DEFAULT" to set as the best-fitting halfspace.
-    - Formatting for rsconfname if file **link** is used
+    - rsconfname can be entered as the name of a :ref:`model file<supportingFiles_mod>`, **or** as a specified value for a halfspace **or** as "DEFAULT" to set as the best-fitting halfspace.
+    - :ref:`Formatting for rsconfname<supportingFiles_con>` if file is used
 
 .. _invL3d:
 
@@ -108,8 +108,8 @@ The main input file for the em1dfm code sets up all aspects of the inversion alg
 
     - Required if mtype = 1, or if mtype = 2, 3 or 4 with :math:`ass>0`
     - Enter "NONE" if not required
-    - rssusfname can be entered as the name of a **model file** (**link**), **or** as a specified value for a halfspace **or** as "DEFAULT" to set as the best-fitting halfspace.
-    - Formatting for rssusfname if file **link** is used
+    - rssusfname can be entered as the name of a :ref:`model file<supportingFiles_mod>`, **or** as a specified value for a halfspace **or** as "DEFAULT" to set as the best-fitting halfspace.
+    - :ref:`Formatting for rssusfname<supportingFiles_sus>` if file is used
 
 
 .. _invL3e:
@@ -118,8 +118,8 @@ The main input file for the em1dfm code sets up all aspects of the inversion alg
 
     - Optional if mtype = 1, 3 or 4
     - Enter "NONE" if you do not want a reference conductivity model in the flatness term
-    - rsconfname can be entered as the name of a **model file** (**link**), **or** as a specified value for a halfspace **or** as "DEFAULT" to set as the best-fitting halfspace.
-    - Formatting for rzconfname if file **link** is used
+    - rsconfname can be entered as the name of a :ref:`model file<supportingFiles_mod>`, **or** as a specified value for a halfspace **or** as "DEFAULT" to set as the best-fitting halfspace.
+    - :ref:`Formatting for rzconfname<supportingFiles_con>` if file is used
 
 
 .. _invL3f:
@@ -128,8 +128,8 @@ The main input file for the em1dfm code sets up all aspects of the inversion alg
 
     - Optional if mtype = 2, 3 or 4
     - Enter "NONE" if you do not want a reference susceptibility model in the flatness term
-    - rsconfname can be entered as the name of a **model file** (**link**), **or** as a specified value for a halfspace **or** as "DEFAULT" to set as the best-fitting halfspace.
-    - Formatting for rzsusfname if file **link** is used
+    - rsconfname can be entered as the name of a :ref:`model file<supportingFiles_mod>`, **or** as a specified value for a halfspace **or** as "DEFAULT" to set as the best-fitting halfspace.
+    - :ref:`Formatting for rzsusfname<supportingFiles_sus>` if file is used
 
 
 .. _invL4:
@@ -146,8 +146,11 @@ The main input file for the em1dfm code sets up all aspects of the inversion alg
     - if mtype = 1, only values for the two parameters acs and acz are entered
     - if mtype = 2, only values for the two parameters ass and asz are entered
     - if mtype = 3 or 4 enter either:
-        1) the string "DEFAULT" and all four parameters acs , acz , ass and asz are required, or
-        2) the six parameters Ac , As, acs , acz , ass and asz, where the value of Ac is :math:`A^c` in the expression for the model norm below, the value of As is :math:`A^s`, the value of acs is :math:`\alpha_s^c`, the value of acz is :math:`\alpha_z^c`, the value of ass is :math:`\alpha_s^s`, and the value of asz is :math:`\alpha_z^s`.
+
+        - the string "DEFAULT" and all four parameters acs , acz , ass and asz are required, **OR**
+        - the six parameters Ac , As, acs , acz , ass and asz, where the value of Ac is :math:`A^c` in the expression for the model norm below, the value of As is :math:`A^s`, the value of acs is :math:`\alpha_s^c`, the value of acz is :math:`\alpha_z^c`, the value of ass is :math:`\alpha_s^s`, and the value of asz is :math:`\alpha_z^s`.
+
+
 
 
 **picture needed**
@@ -221,7 +224,9 @@ there are more than a few soundings to be inverted in a single run.)
 Examples
 --------
 
-**Example 1**
+**Example 1:**
+
+Here, the inversion is set to recover :math:`mtype` = 1; that is, stictly a conductivity model. As a result, the only lines
 
 .. figure:: images/input_inv_ex1.png
      :align: center

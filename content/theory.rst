@@ -11,9 +11,11 @@ These programs model the Earth's frequency-domain electromagnetic response due t
 The data are the secondary magnetic field which results from currents and magnetization induced in the Earth.
 
 
-.. figure:: ../images/domain.png
-    :align: center
-    :figwidth: 70%
+.. figure:: ../images/soundings_domain.png
+     :align: center
+     :width: 700
+
+     A set of 1D layered Earths, each of which denote a separate "sounding" (left). Geometry for the 1D layered Earth problem for each sounding (right).
 
 
 

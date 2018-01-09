@@ -47,7 +47,7 @@ objective function are also printed out. Thus:
 
 - *"Target misfit not attained convergence to minimum":* For inversion algorithm 2 the target misfit could not be reached, but convergence to the minimum misfit has occurred.
 
-- *"No suitable step found":* No step length was found that decreased the objective function, even after being decreased by a factor of 2**nnmax*. See Eq. :eq:`mod_update` in the :ref:`background theory<theory>` section. See also the diagnostics file (link).
+- *"No suitable step found":* No step length was found that decreased the objective function, even after being decreased by a factor of 2**nnmax*. See Eq. :eq:`mod_update` in the :ref:`background theory<theory>` section.
 
 - *"Max number of iterations done without convergence":* The convergence criteria have not been satisfied in the specified maximum number of iterations.
 
