@@ -141,7 +141,7 @@ The main input file for the em1dfm code sets up all aspects of the inversion alg
 
 .. _invL5:
 
-- **Line 5 - alphas:** "alphas" control the relative weighting of the smallness and flatness terms for the conductivity and susceptibility towards the model objective function. In the :ref:`theory <theory_alphas>`, the alphas are represented by :math:`acs`, :math:`ass`, :math:`acz` and :math:`asz`. :
+- **Line 5 - alphas:** "alphas" control the relative weighting of the smallness and flatness terms for the conductivity and susceptibility towards the model objective function. In the :ref:`theory <theory_alphas>`, the alphas are represented by :math:`acs`, :math:`ass`, :math:`acz` and :math:`asz`:
 
     - if mtype = 1, only values for the two parameters acs and acz are entered
     - if mtype = 2, only values for the two parameters ass and asz are entered
@@ -151,9 +151,6 @@ The main input file for the em1dfm code sets up all aspects of the inversion alg
         - the six parameters Ac , As, acs , acz , ass and asz, where the value of Ac is :math:`A^c` in the expression for the model norm below, the value of As is :math:`A^s`, the value of acs is :math:`\alpha_s^c`, the value of acz is :math:`\alpha_z^c`, the value of ass is :math:`\alpha_s^s`, and the value of asz is :math:`\alpha_z^s`.
 
 
-
-
-**picture needed**
 
 .. _invL6:
 
@@ -184,8 +181,8 @@ The main input file for the em1dfm code sets up all aspects of the inversion alg
 - **Line 9 - logstretch:** "logstretch" impacts the logarithmic barrier term for ensuring the recovered susceptibility contains strictly positive values. It is represented by :math:`c` in eq. :eq:`barrier_cond`. This field can be entered as either:
 
     - "DEFAULT" can be entered to indicate a value of 1
-    - some other value (a strictly positive real number) can be entered (only required if mtype = 2 or 3);
-
+    - some other value (a strictly positive real number) can be entered (only required if mtype = 2 or 3)
+ 
 .. _invL10:
 
 **Line 10: numconv**
@@ -226,7 +223,7 @@ Examples
 
 **Example 1:**
 
-Here, the inversion is set to recover :math:`mtype` = 1; that is, stictly a conductivity model. As a result, the only lines
+Here, the inversion is set to strictly recover a conductivity model (:math:`mtype` = 1). As a result, there is no line for the starting susceptibility model (:ref:`Line 3b<invL3b>`) or flattest susceptibility model (:ref:`Line 3f<invL3f>`). A background susceptibility model, however, is provided (:ref:`Line 3d<invL3d>`).
 
 .. figure:: images/input_inv_ex1.png
      :align: center
@@ -235,7 +232,9 @@ Here, the inversion is set to recover :math:`mtype` = 1; that is, stictly a cond
 
 
 
-**Example 2**
+**Example 2:**
+
+Here, the inversion recovers both a conductivity and a strictly positive susceptibility model (:math:`mtype` = 3). Using a layers only file, the starting conductivity (:ref:`Line 3a<invL3a>`) is set as the best-fitting half-space. The starting susceptibility model (:ref:`Line 3b<invL3b>`) was set using a constant value. In this case, fields must be entered for the reference and flattest models for both the conductivity and susceptibility models. Although there are no flattest model, four alphas are required (:ref:`Line 5<invL5>`).
 
 
 .. figure:: images/input_inv_ex2.png

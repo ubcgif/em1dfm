@@ -9,15 +9,20 @@ Description
 EM1DFM is a Fortran-based, multi-platform program library for carrying out the one-dimensional inversion of frequency-domain, small loop, electromagnetic data acquired to determine the spatial variation of the electrical conductivity and/or magnetic susceptibility of the subsurface. The name "EM1DFM" derives from: electromagnetics ("EM"), one-dimensional models ("1D"), frequency-domain observations ("F"), and magnetic (dipole) sources and
 receivers ("M"). 
 
-The acquired data are measurements of the magnetic field associated with electric currents and magnetization induced in the subsurface by a time-varying current in a transmitter loop. Information about how the conductivity and susceptibility vary with depth is obtained by making measurements for different frequencies of the transmitter current, and for different separations, heights and orientations of the transmitters and receivers. Making such measurements at different sounding locations gives information about the lateral variation in the subsurface. Sounding locations refer to horizontal positions where the Earth can locally be considered a 1D layered Earth (click to enlarge the figure below).
+The acquired data are measurements of the magnetic field due to electric currents and magnetization induced in the subsurface by a time-varying current in a transmitter loop. Information about how the conductivity and susceptibility vary with depth is obtained by making measurements for different frequencies of the transmitter current, and for different separations, heights and orientations of the transmitters and receivers. Different soundings provide information about the lateral variation in the subsurface. A sounding is a distinct collection of FEM measurements (transmitters, receivers and frequencies) which are used to recover a corresponding 1D layered Earth model. On the figure below, we see two examples. On the left, two soundings (e.g. two separate sets of measurements) are collected at the same location; in this case, the inversion should recover the same model. On the right, we see the use of separate soundings to map lateral variation.
 
 .. figure:: ../images/soundings_domain.png
      :align: center
      :width: 700
 
-     A set of 1D layered Earths, each of which denote a separate "sounding" (left). Geometry for the 1D layered Earth problem for each sounding (right).
+     Two distinct groupings of transmitters and receivers (soundings) at the same location (left). Different soundings used to map lateral variation in the Earth (right). **Click to enlarge**.
 
 
+.. figure:: ../images/domain.png
+     :align: right
+     :figwidth: 50%
+
+     Layered 1D model describing the Earth for each sounding.
 
 For any sounding location, the mathematical representation that EM1DFM uses to model the Earth varies only with depth. In particular, the representation comprises many uniform, horizontal layers, and it is the conductivity and/or susceptibility within each layer that is computed. Four options are available: just the conductivity in each layer can be constructed, or just the susceptibility (constrained to be positive) in each layer, or both the conductivity and susceptibility with the positivity constraint on the susceptibility, or both the conductivity and susceptibility without the positivity constraint. For a complete mathematical treatment of the forward and inversion problem, see :ref:`Background Theory<theory>`.
 

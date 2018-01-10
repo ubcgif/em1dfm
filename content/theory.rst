@@ -11,14 +11,6 @@ These programs model the Earth's frequency-domain electromagnetic response due t
 The data are the secondary magnetic field which results from currents and magnetization induced in the Earth.
 
 
-.. figure:: ../images/soundings_domain.png
-     :align: center
-     :width: 700
-
-     A set of 1D layered Earths, each of which denote a separate "sounding" (left). Geometry for the 1D layered Earth problem for each sounding (right).
-
-
-
 .. _theory_source:
 
 Details regarding the source and receiver
@@ -33,6 +25,14 @@ the spatial variation in magnetic flux through the receiver loop is negligible.
 Details regarding the domain
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+
+.. figure:: ../images/domain.png
+     :align: right
+     :figwidth: 50%
+
+     Layered 1D model describing the Earth for each sounding.
+
+
 EM1DFM and EM1DFMFWD model the Earth's response for measurements above a stack of uniform, horizontal
 layers. **The coordinate system used for describing the Earth models has z as positive downwards, with the
 surface of the Earth at z=0**. The z-coordinates of the source and receiver locations (which must be above
@@ -43,10 +43,18 @@ at multiple locations are being interpreted, the corresponding one-dimensional m
 create a two-dimensional image of the subsurface.
 
 Because horizontal position is meaningless in a model that varies only vertically, all measurements that
-are to be inverted for a single one-dimensional model must be grouped together as a “sounding”. Each
+are to be inverted for a single one-dimensional model must be grouped together as a “sounding”.
+A sounding can be considered a distinct collection of FEM measurements (transmitters, receivers and frequencies). Each
 different sounding is inverted for a separate one-dimensional model. The horizontal location at which a
 sounding is centered is not used within the program, but is written out to distinguish results for different
 soundings.
+
+.. figure:: ../images/soundings_domain.png
+     :align: center
+     :width: 700
+
+     Two distinct groupings of transmitters and receivers (soundings) at the same location (left). Different soundings used to map lateral variation in the Earth (right). **Click to enlarge**.
+
 
 The electrical conductivity of Earth materials varies over several orders of magnitude, making it more
 natural to invert for the logarithms of the layer conductivities rather than the conductivities themselves.
