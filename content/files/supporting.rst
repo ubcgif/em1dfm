@@ -27,10 +27,10 @@ This file contains the observations and all the survey parameters, with five lin
 **The structure of the observations file is as follows.** Click on the letter labels for variable names, and for parameter details:
 
 | :ref:`nsounds<obsA>`
-| :ref:`soundx_a<obsB>`  :ref:`soundy_a<obsC>`  :ref:`nfreqs_a<obsD>` 
-| :ref:`freq_a<obsE>`  :ref:`nt_a<obsF>`
-| :ref:`momt_a<obsG>`  :ref:`zt_a<obsH>`  :ref:`ot_a<obsI>`  :ref:`nr_a<obsJ>`
-| :ref:`momr_a<obsK>`  :ref:`trx_a<obsL>`  :ref:`try_a<obsM>`  :ref:`zr_a<obsN>`  :ref:`or_a<obsO>`  :ref:`ontype_a<obsP>`  :ref:`octype_a<obsQ>`  :ref:`obs_a<obsR>`  :ref:`utype_a<obsS>`  :ref:`uncert_a<obsT>`
+| :ref:`soundx_a<obsB>` :math:`\;\;` :ref:`soundy_a<obsC>` :math:`\;\;` :ref:`nfreqs_a<obsD>` 
+| :ref:`freq_a<obsE>` :math:`\;\;` :ref:`nt_a<obsF>`
+| :ref:`momt_a<obsG>` :math:`\;\;` :ref:`zt_a<obsH>` :math:`\;\;` :ref:`ot_a<obsI>` :math:`\;\;` :ref:`nr_a<obsJ>`
+| :ref:`momr_a<obsK>` :math:`\;\;` :ref:`trx_a<obsL>` :math:`\;\;` :ref:`try_a<obsM>` :math:`\;\;` :ref:`zr_a<obsN>` :math:`\;\;` :ref:`or_a<obsO>` :math:`\;\;` :ref:`ontype_a<obsP>` :math:`\;\;` :ref:`octype_a<obsQ>` :math:`\;\;` :ref:`obs_a<obsR>` :math:`\;\;` :ref:`utype_a<obsS>` :math:`\;\;` :ref:`uncert_a<obsT>`
 |
 |
 

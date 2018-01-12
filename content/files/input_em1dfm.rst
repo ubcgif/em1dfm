@@ -181,7 +181,7 @@ The main input file for the em1dfm code sets up all aspects of the inversion alg
 - **Line 9 - logstretch:** "logstretch" impacts the logarithmic barrier term for ensuring the recovered susceptibility contains strictly positive values. It is represented by :math:`c` in eq. :eq:`barrier_cond`. This field can be entered as either:
 
     - "DEFAULT" can be entered to indicate a value of 1
-    - some other value (a strictly positive real number) can be entered (only required if mtype = 2 or 3)
+    - some other value (a strictly positive real number) can be entered (only used if mtype = 2 or 3)
  
 .. _invL10:
 
