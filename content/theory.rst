@@ -88,7 +88,7 @@ the secondary field is normalized by the magnitude of the free-space field.
 Forward Modeling
 ----------------
 
-.. important:: This code uses a left-handed coordinate system with X (Easting), Y (Northing) and Z (+ve downwards) with a time-dependency of :math:`e^{+ i\omega t}`.
+.. note:: This code uses a left-handed coordinate system with X (Easting), Y (Northing) and Z (+ve downwards) with a time-dependency of :math:`e^{+ i\omega t}`.
 
 The method used to compute the magnetic field values for a particular source-receiver arrangement over a
 layered Earth model is the matrix propagation approach described in Farquharson (:cite:`Farquharson2003`). The method
