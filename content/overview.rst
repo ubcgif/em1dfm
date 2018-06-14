@@ -46,7 +46,7 @@ A **constrained educational version** of the program is available with
 the `IAG <http://www.flintbox.com/public/project/1605/>`__ package
 (please visit `UBC-GIF website <http://gif.eos.ubc.ca>`__ for details).
 The educational version is fully functional so that users can learn how
-to carry out effective and efficient 3D inversions of magnetic data.
+to carry out effective and efficient 1D inversions of electromagnetic data.
 **However, RESEARCH OR COMMERCIAL USE IS NOT POSSIBLE because the
 educational version only allows a limited number of data and model
 cells**.
