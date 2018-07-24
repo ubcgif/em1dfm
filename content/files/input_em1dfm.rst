@@ -6,7 +6,7 @@ EM1DFM Main Input File
 Line Descriptions
 -----------------
 
-The main input file for the em1dfm code sets up all aspects of the inversion algorithm. This includes setting: the observation file, the inversion algorithm type, what starting and reference models are used, and specifying inversion parameters. **This file must be given the name "em1dtm.in"**. The structure of the file **em1dfm.in** is described below. The :ref:`supporting files<supportingFiles>` and their structures are provided on the following page.
+The main input file for the em1dfm code sets up all aspects of the inversion algorithm. This includes setting: the observation file, the inversion algorithm type, what starting and reference models are used, and specifying inversion parameters. **This file must be given the name "em1dfm.in"**. The structure of the file **em1dfm.in** is described below. The :ref:`supporting files<supportingFiles>` and their structures are provided on the following page.
 
 **NOTE:**
     - some lines may be omitted depending on the inversion type chosen (which mean the number of lines may change!!!)
