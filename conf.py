@@ -36,9 +36,11 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinxcontrib.bibtex',
     'edit_on_github',
-    'purpose',
-    'example',
+    # 'purpose',
+    # 'example',
 ]
+
+bibtex_bibfiles = ['reference.bib']
 
 # Number figures
 numfig = True
